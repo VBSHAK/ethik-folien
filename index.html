@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>Herz oder Kopf?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..700&family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@500;700&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<style>
+/* ================================================================
+   HERZ ODER KOPF? — Gesinnungs- und Verantwortungsethik
+   Tasten:  Leertaste / →  weiter      ←  zurück
+            N  Sprechtext ein/aus      S  ganzes Skript (druckbar)
+            F  Vollbild                C  Uhr starten/stoppen
+            1 / 2  Stimme für linke / rechte Seite (bei Abstimmungen)
+   ================================================================ */
+:root{
+  --paper:#F6F1E7; --paper2:#EDE4D3; --card:#FFFDF8;
+  --ink:#17172B; --ink2:#46455C; --ink3:#7C798E; --line:#DCD1BD;
+  --herz:#E0482F; --herz2:#B8321C; --herzs:#FBE0D8;
+  --kopf:#2752C7; --kopf2:#1B3C99; --kopfs:#DCE5FA;
+  --gold:#C4952B; --golds:#F5E7C3;
+  --luis:#6A4DE0; --ciepi:#0C9483;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:#12121F;overflow:hidden;font-family:"Bricolage Grotesque",system-ui,sans-serif;
+  color:var(--ink);-webkit-font-smoothing:antialiased;font-variant-ligatures:common-ligatures no-discretionary-ligatures no-historical-ligatures no-contextual}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit;font-size:inherit}
+h1,h2,h3,p{margin:0}
+#viewport{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#stage{position:relative;width:1600px;height:900px;flex:none;transform-origin:center center;
+  background:var(--paper);overflow:hidden;border-radius:6px;box-shadow:0 30px 90px rgba(0,0,0,.5)}
+/* Papierstruktur */
+#stage::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+   radial-gradient(900px 500px at 8% -10%, rgba(224,72,47,.10), transparent 60%),
+   radial-gradient(900px 500px at 105% 110%, rgba(39,82,199,.10), transparent 60%),
+   repeating-linear-gradient(0deg, rgba(23,23,43,.018) 0 1px, transparent 1px 4px)}
+
+/* ---------- Grundgerüst einer Folie ---------- */
+.slide{position:absolute;inset:0;padding:54px 84px 70px;display:flex;flex-direction:column;z-index:1;
+  animation:slin .55s cubic-bezier(.2,.8,.2,1) both}
+@keyframes slin{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.top{display:flex;align-items:center;gap:18px;margin-bottom:26px;flex:none}
+.sec{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:17px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink3)}
+.sec b{color:var(--ink);font-weight:700}
+.spk{margin-left:auto;display:flex;align-items:center;gap:7px;padding:3px 12px 3px 3px;border-radius:99px;
+  background:transparent;border:1.5px solid var(--line);font-weight:700;font-size:14px;color:var(--ink3);opacity:.75}
+.spk i{width:22px;height:22px;font-size:11px!important;border-radius:50%;background:var(--sc);color:#fff;display:flex;
+  align-items:center;justify-content:center;font-style:normal;font-size:18px}
+.spk small{font-size:12px;font-weight:600;color:var(--ink3);margin-left:4px}
+.spk.luis{--sc:var(--luis)} .spk.ciepi{--sc:var(--ciepi)}
+.body{flex:1;min-height:0;display:flex;position:relative}
+
+.display{font-family:"Fraunces",Georgia,serif;font-weight:800;font-size:132px;line-height:.9;letter-spacing:-.035em}
+.h1{font-family:"Fraunces",Georgia,serif;font-weight:700;font-size:74px;line-height:.98;letter-spacing:-.025em}
+.h2{font-family:"Fraunces",Georgia,serif;font-weight:700;font-size:50px;line-height:1.02;letter-spacing:-.02em}
+.h3{font-weight:800;font-size:30px;line-height:1.12}
+.lead{font-size:30px;line-height:1.36;color:var(--ink2)}
+.txt{font-size:24px;line-height:1.42;color:var(--ink2)}
+.mono{font-family:"JetBrains Mono",monospace}
+.kick{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:16px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink3)}
+.herz{color:var(--herz)} .kopf{color:var(--kopf)}
+em.hl{font-style:normal;background:linear-gradient(transparent 58%, var(--golds) 58%);padding:0 4px}
+
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:22px;padding:26px 30px;
+  box-shadow:0 10px 30px rgba(23,23,43,.07)}
+.card.h{border-color:var(--herz);background:linear-gradient(180deg,#FFF8F5,#FFFDF8)}
+.card.k{border-color:var(--kopf);background:linear-gradient(180deg,#F6F8FF,#FFFDF8)}
+.chip{display:inline-flex;align-items:center;gap:8px;border-radius:99px;padding:6px 16px;font-weight:800;
+  font-size:19px;background:var(--paper2);color:var(--ink2)}
+.chip.h{background:var(--herzs);color:var(--herz2)} .chip.k{background:var(--kopfs);color:var(--kopf2)}
+.chip.g{background:var(--golds);color:#7A5A12}
+
+/* Schritt-für-Schritt aufdecken */
+[data-step]{opacity:0;transform:translateY(14px);transition:opacity .45s ease, transform .5s cubic-bezier(.2,.8,.2,1)}
+[data-step].on{opacity:1;transform:none}
+[data-step].pop.on{animation:pop .5s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes pop{0%{transform:scale(.7)}100%{transform:scale(1)}}
+
+/* ---------- Symbole ---------- */
+.ico{display:inline-block;flex:none}
+.bob{animation:bob 3.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.beat{animation:beat 1.6s ease-in-out infinite;transform-origin:center}
+@keyframes beat{0%,100%{transform:scale(1)}12%{transform:scale(1.09)}24%{transform:scale(1)}36%{transform:scale(1.06)}}
+.ripple circle{transform-origin:center;transform-box:fill-box;animation:rip 2.6s ease-out infinite}
+.ripple circle:nth-child(2){animation-delay:.6s}.ripple circle:nth-child(3){animation-delay:1.2s}
+@keyframes rip{0%{transform:scale(.3);opacity:1}100%{transform:scale(1.25);opacity:0}}
+
+/* ---------- Abstimmung (Hände zählen) ---------- */
+.tally{display:grid;grid-template-columns:1fr 1.25fr 1fr;align-items:center;gap:26px}
+.tside{display:flex;flex-direction:column;align-items:center;gap:8px;border-radius:22px;padding:18px 16px 16px;
+  background:var(--card);border:2.5px solid var(--tc);box-shadow:0 6px 0 var(--tc);position:relative;
+  transition:transform .12s}
+.tside.a{--tc:var(--herz)} .tside.b{--tc:var(--kopf)}
+.tside:active{transform:translateY(4px);box-shadow:0 2px 0 var(--tc)}
+.tside .tl{font-weight:800;font-size:25px;text-align:center;line-height:1.15;color:var(--ink)}
+.tside .tn{font-family:"Fraunces",serif;font-weight:800;font-size:84px;line-height:.9;color:var(--tc)}
+.tside .th{font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3)}
+.tside .tm{position:absolute;top:8px;right:10px;width:34px;height:34px;border-radius:50%;
+  background:var(--paper2);font-weight:800;font-size:22px;color:var(--ink3);line-height:1}
+.rope{position:relative;height:120px}
+.rope .ln{position:absolute;left:0;right:0;top:50%;height:14px;margin-top:-7px;border-radius:7px;
+  background:repeating-linear-gradient(115deg,#B89260 0 10px,#9C7646 10px 20px);box-shadow:inset 0 -3px 0 rgba(0,0,0,.18)}
+.rope .mid{position:absolute;left:50%;top:10px;bottom:10px;width:3px;margin-left:-1.5px;background:var(--ink);opacity:.25;border-radius:2px}
+.rope .knot{position:absolute;top:50%;left:var(--p,50%);width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;
+  background:var(--gold);border:4px solid #fff;box-shadow:0 6px 16px rgba(0,0,0,.25);transition:left .6s cubic-bezier(.2,1.3,.4,1)}
+.rope .pct{position:absolute;bottom:-6px;font-family:"JetBrains Mono",monospace;font-weight:700;font-size:20px}
+.rope .pct.l{left:0;color:var(--herz)} .rope .pct.r{right:0;color:var(--kopf)}
+
+/* ---------- Karten zum Umdrehen ---------- */
+.flip{perspective:1400px;cursor:pointer}
+.flip .in{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.3,1.3,.5,1);transform-style:preserve-3d}
+.flip.open .in{transform:rotateY(180deg)}
+.flip .fa,.flip .fb{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:22px;
+  padding:24px 26px;display:flex;flex-direction:column;gap:12px}
+.flip .fa{background:var(--card);border:1.5px solid var(--line);box-shadow:0 10px 30px rgba(23,23,43,.08)}
+.flip .fb{transform:rotateY(180deg);color:#fff}
+.flip .fb.h{background:linear-gradient(150deg,var(--herz),var(--herz2))}
+.flip .fb.k{background:linear-gradient(150deg,var(--kopf),var(--kopf2))}
+.flip .n{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:15px;letter-spacing:.14em;color:var(--ink3)}
+.flip .q{font-size:25px;line-height:1.3;font-weight:600}
+.flip .ask{margin-top:auto;display:flex;gap:10px;font-weight:800;font-size:20px}
+.flip .fb .v{font-family:"Fraunces",serif;font-weight:800;font-size:44px;line-height:1}
+.flip .fb p{font-size:21px;line-height:1.35;opacity:.95}
+
+/* ---------- Fuß: Fortschritt ---------- */
+#foot{position:absolute;left:84px;right:84px;bottom:22px;display:flex;align-items:center;gap:18px;z-index:5}
+#bar{flex:1;display:flex;gap:5px}
+#bar i{flex:1;height:7px;border-radius:4px;background:var(--line);position:relative;overflow:hidden}
+#bar i.l::after,#bar i.c::after{content:"";position:absolute;inset:0;border-radius:4px;opacity:0;transition:opacity .3s}
+#bar i.l::after{background:var(--luis)} #bar i.c::after{background:var(--ciepi)}
+#bar i.done::after{opacity:.45} #bar i.now::after{opacity:1}
+#num{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:15px;color:var(--ink3);letter-spacing:.08em}
+#clock{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:15px;color:var(--ink3);min-width:9ch;text-align:right}
+#clock.run{color:var(--ink)} #clock.over{color:var(--herz)}
+.navb{width:34px;height:34px;border-radius:50%;background:var(--card);border:1.5px solid var(--line);font-size:18px;
+  color:var(--ink2);display:flex;align-items:center;justify-content:center}
+.navb:hover{border-color:var(--ink)}
+
+/* ---------- Sprechtext ---------- */
+#notes{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);width:min(1100px,94vw);max-height:44vh;overflow:auto;
+  background:rgba(18,18,31,.96);color:#EDEAF6;border-radius:16px;padding:18px 24px;z-index:50;display:none;
+  font-size:18px;line-height:1.5;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+#notes.show{display:block}
+#notes .nh{display:flex;gap:12px;align-items:center;font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.12em;
+  text-transform:uppercase;color:#A9A5C2;margin-bottom:8px}
+#notes .nh b{padding:3px 10px;border-radius:99px;color:#fff}
+#notes ul{margin:10px 0 0;padding-left:20px;color:#C9C5DE;font-size:16px}
+#script{position:fixed;inset:0;z-index:60;background:#F6F1E7;overflow:auto;display:none;padding:40px 20px 80px}
+#script.show{display:block}
+#script .sw{max-width:860px;margin:0 auto}
+#script h1{font-family:"Fraunces",serif;font-size:46px;margin-bottom:6px}
+#script .row{border-top:1.5px solid var(--line);padding:18px 0;display:grid;grid-template-columns:120px 1fr;gap:18px;break-inside:avoid}
+#script .who{font-weight:800;font-size:18px}
+#script .who small{display:block;font-family:"JetBrains Mono",monospace;font-weight:500;font-size:13px;color:var(--ink3);margin-top:3px}
+#script .say{font-size:18px;line-height:1.55}
+#script .act{font-size:15px;color:var(--ink3);margin-top:6px}
+#script .x{position:fixed;top:16px;right:20px;background:var(--ink);color:#fff;border-radius:99px;padding:10px 18px;font-weight:700}
+#help{position:fixed;left:14px;top:12px;color:#8F8BA8;font-family:"JetBrains Mono",monospace;font-size:12px;z-index:4;opacity:.8}
+@media print{
+  body{background:#fff;overflow:visible} #viewport,#help,#notes,#script .x{display:none!important}
+  #script{display:block!important;position:static;padding:0}
+}
+
+/* ---------- Einzelne Folien ---------- */
+.door{position:relative;width:360px;height:560px;flex:none}
+.door .knock{position:absolute;font-family:"Fraunces",serif;font-weight:800;font-style:italic;color:var(--ink);font-size:44px;
+  animation:knock 1.8s ease-in-out infinite}
+@keyframes knock{0%,60%,100%{transform:rotate(-6deg) scale(1);opacity:.9}66%{transform:rotate(4deg) scale(1.12);opacity:1}72%{transform:rotate(-8deg) scale(1)}}
+.lightsl{animation:flick 3s ease-in-out infinite}
+@keyframes flick{0%,100%{opacity:.95}45%{opacity:.6}50%{opacity:1}}
+
+.vs{width:96px;height:96px;border-radius:50%;background:var(--ink);color:var(--paper);display:flex;align-items:center;
+  justify-content:center;font-family:"Fraunces",serif;font-weight:800;font-style:italic;font-size:38px;flex:none;
+  box-shadow:0 0 0 10px var(--paper)}
+
+.panel3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px}
+.comic{position:relative;background:var(--card);border:3px solid var(--ink);border-radius:18px;padding:22px 22px 18px;
+  display:flex;flex-direction:column;gap:14px;box-shadow:8px 8px 0 var(--ink)}
+.comic .who{display:flex;align-items:center;gap:12px;font-weight:800;font-size:22px}
+.av{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;
+  font-weight:800;font-size:26px;flex:none;border:3px solid var(--ink)}
+.bubble{position:relative;background:var(--paper);border:2.5px solid var(--ink);border-radius:18px;padding:14px 18px;
+  font-size:23px;line-height:1.3;font-weight:600}
+.bubble::before{content:"";position:absolute;left:26px;top:-14px;width:20px;height:20px;background:var(--paper);
+  border-left:2.5px solid var(--ink);border-top:2.5px solid var(--ink);transform:rotate(45deg) skew(8deg,8deg)}
+
+.cmp{display:grid;grid-template-columns:230px 1fr 1fr;gap:12px 18px;align-items:stretch}
+.cmp .rl{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:15px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink3);display:flex;align-items:center}
+.cmp .c{border-radius:14px;padding:13px 20px;font-size:23px;line-height:1.3;font-weight:600;display:flex;align-items:center}
+.cmp .c.h{background:var(--herzs);color:#6E1D0F} .cmp .c.k{background:var(--kopfs);color:#12296A}
+.cmp .hd{border-radius:16px;padding:16px 20px;color:#fff;display:flex;align-items:center;gap:14px}
+.cmp .hd.h{background:var(--herz)} .cmp .hd.k{background:var(--kopf)}
+.cmp .hd b{font-family:"Fraunces",serif;font-size:32px;line-height:1}
+
+.medal{width:190px;height:190px;border-radius:50%;flex:none;background:radial-gradient(circle at 35% 30%,#fff,#E9E0CC 70%);
+  border:6px solid var(--gold);box-shadow:0 12px 30px rgba(0,0,0,.18), inset 0 -8px 20px rgba(0,0,0,.07);overflow:hidden}
+.quote{font-family:"Fraunces",serif;font-style:italic;font-weight:500;font-size:34px;line-height:1.28;color:var(--ink)}
+.quote::before{content:"„";color:var(--gold);font-size:1.5em;margin-right:4px}
+.src{font-family:"JetBrains Mono",monospace;font-size:15px;color:var(--ink3);letter-spacing:.08em;margin-top:10px}
+
+.tline{position:relative;flex:1;display:flex;flex-direction:column}
+.axis{position:absolute;left:0;right:0;top:318px;height:6px;border-radius:3px;background:var(--ink)}
+.axis::after{content:"";position:absolute;right:-6px;top:-8px;border-left:18px solid var(--ink);border-top:11px solid transparent;border-bottom:11px solid transparent}
+.gap{position:absolute;top:300px;left:19%;width:96px;height:44px;background:var(--paper);display:flex;align-items:center;justify-content:center;
+  font-family:"JetBrains Mono",monospace;font-weight:700;font-size:13px;color:var(--ink3)}
+.gap::before,.gap::after{content:"";position:absolute;top:0;bottom:0;width:5px;background:var(--ink);transform:skewX(-18deg)}
+.gap::before{left:6px}.gap::after{right:6px}
+.ph{position:absolute;width:210px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px}
+.ph .md{width:118px;height:118px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#E9E0CC 70%);
+  border:5px solid var(--pc);box-shadow:0 8px 20px rgba(0,0,0,.14);overflow:hidden}
+.ph.up{top:40px}.ph.dn{top:352px}
+.ph .nm{font-weight:800;font-size:23px;line-height:1.05}
+.ph .yr{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--ink3);font-weight:700}
+.ph .ds{font-size:18px;line-height:1.3;color:var(--ink2)}
+.ph .tg{font-size:14px;padding:3px 12px}
+.ph::after{content:"";position:absolute;left:50%;width:3px;background:var(--pc);margin-left:-1.5px}
+.ph.up::after{top:100%;height:calc(318px - 40px - 100%)}
+.ph.dn::after{bottom:100%;height:28px}
+.ph.dot::before{content:"";position:absolute;left:50%;width:22px;height:22px;margin-left:-11px;border-radius:50%;background:var(--pc);border:4px solid var(--paper)}
+.ph.up.dot::before{top:calc(318px - 40px - 8px)}
+.ph.dn.dot::before{top:-42px}
+
+.rings{position:relative;width:640px;height:640px;flex:none}
+.ring{position:absolute;left:50%;top:50%;border-radius:50%;transform:translate(-50%,-50%) scale(.2);opacity:0;
+  transition:transform .8s cubic-bezier(.2,1.2,.4,1),opacity .4s;display:flex;justify-content:center}
+.ring.on{transform:translate(-50%,-50%) scale(1);opacity:1}
+.ring span{position:absolute;top:8px;background:var(--card);border-radius:99px;padding:4px 14px;font-weight:800;font-size:18px;
+  box-shadow:0 3px 10px rgba(0,0,0,.1);white-space:nowrap}
+
+.fields{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;flex:1;min-height:0;margin-bottom:8px}
+.fields .fi{font-size:72px!important} .fields h3{font-size:36px!important} .fields p{font-size:23px!important}
+.fields .duo div{font-size:20px!important;padding:10px 14px!important}
+.field{border-radius:22px;padding:24px;background:var(--card);border:1.5px solid var(--line);display:flex;flex-direction:column;gap:12px;
+  box-shadow:0 10px 30px rgba(23,23,43,.07);position:relative;overflow:hidden}
+.field .fi{font-size:54px;line-height:1}
+.field h3{font-size:30px;font-weight:800}
+.field p{font-size:20px;line-height:1.38;color:var(--ink2)}
+.field .duo{margin-top:auto;display:flex;flex-direction:column;gap:7px}
+.field .duo div{font-size:17px;line-height:1.3;padding:8px 12px;border-radius:10px}
+.field .duo .h{background:var(--herzs);color:#6E1D0F}.field .duo .k{background:var(--kopfs);color:#12296A}
+
+.scale{position:relative;width:560px;height:560px;flex:none}
+.beam{position:absolute;left:30px;right:30px;top:130px;height:0;transform:rotate(var(--tilt,0deg));transition:transform 1s cubic-bezier(.3,1.5,.5,1)}
+.beam .bar{position:absolute;left:0;right:0;top:-7px;height:14px;border-radius:7px;background:var(--ink)}
+.pan{position:absolute;top:0;width:190px;transform:rotate(calc(var(--tilt,0deg) * -1));transform-origin:50% 0;transition:transform 1s cubic-bezier(.3,1.5,.5,1)}
+.pan.l{left:-60px}.pan.r{right:-60px}
+.pan .str{height:120px;margin:0 auto;width:120px;border-left:3px solid var(--ink);border-right:3px solid var(--ink);
+  clip-path:polygon(50% 0,100% 100%,0 100%);background:transparent}
+.pan .dish{height:36px;border-radius:0 0 95px 95px;margin-top:-2px}
+.pan.l .dish{background:var(--herz)}.pan.r .dish{background:var(--kopf)}
+.pan .w{display:flex;flex-wrap:wrap-reverse;justify-content:center;gap:4px;position:absolute;bottom:34px;left:10px;right:10px}
+.pan .w i{width:30px;height:24px;border-radius:6px 6px 3px 3px;background:var(--gold);box-shadow:inset 0 -4px 0 rgba(0,0,0,.2);animation:pop .4s both}
+.post{position:absolute;left:50%;top:120px;bottom:40px;width:18px;margin-left:-9px;background:var(--ink);border-radius:9px}
+.foot{position:absolute;left:50%;bottom:20px;width:220px;height:34px;margin-left:-110px;background:var(--ink);border-radius:17px 17px 6px 6px}
+.pivot{position:absolute;left:50%;top:110px;width:42px;height:42px;margin-left:-21px;border-radius:50%;background:var(--gold);border:5px solid var(--ink);z-index:2}
+.klist{display:flex;flex-direction:column;gap:12px}
+.kitem{display:flex;gap:14px;align-items:flex-start;font-size:22px;line-height:1.32;font-weight:600;padding:13px 18px;border-radius:14px}
+.kitem.h{background:var(--herzs);color:#6E1D0F}.kitem.k{background:var(--kopfs);color:#12296A}
+.kitem b{font-size:26px;line-height:1}
+
+.eq{display:flex;align-items:center;gap:30px;justify-content:center}
+.eq .t{display:flex;flex-direction:column;align-items:center;gap:8px;font-weight:800;font-size:26px}
+.eq .op{font-family:"Fraunces",serif;font-weight:800;font-size:90px;color:var(--ink3)}
+.take{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.take .card{display:flex;gap:16px;align-items:flex-start}
+.take .card > b{font-family:"Fraunces",serif;font-size:52px;line-height:.9;color:var(--gold)}
+.take .card p{font-size:22px;line-height:1.35;color:var(--ink2)}
+
+.qrwrap{background:#fff;border-radius:26px;padding:22px;box-shadow:0 20px 60px rgba(23,23,43,.18);border:1.5px solid var(--line);flex:none}
+.qrwrap canvas{display:block;width:380px;height:380px;image-rendering:pixelated}
+.url{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:34px;color:var(--herz);word-break:break-all;line-height:1.1}
+.steps3{display:flex;flex-direction:column;gap:14px}
+.steps3 div{display:flex;gap:16px;align-items:center;font-size:26px;font-weight:600}
+.steps3 b{width:48px;height:48px;border-radius:50%;background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;
+  font-family:"JetBrains Mono",monospace;flex:none}
+.teams{display:flex;gap:14px}
+.team{flex:1;border-radius:18px;padding:16px 18px;color:#fff;display:flex;align-items:center;gap:14px;font-weight:800;font-size:24px;line-height:1.1}
+.team small{display:block;font-weight:500;font-size:16px;opacity:.9;margin-top:3px}
+.team.h{background:linear-gradient(150deg,var(--herz),var(--herz2))}.team.k{background:linear-gradient(150deg,var(--kopf),var(--kopf2))}
+.dancers{display:flex;gap:6px;align-items:flex-end}
+.dancers span{font-size:46px;display:inline-block;animation:dnc .9s ease-in-out infinite}
+.dancers span:nth-child(2){animation-delay:.15s}.dancers span:nth-child(3){animation-delay:.3s}.dancers span:nth-child(4){animation-delay:.45s}
+@keyframes dnc{0%,100%{transform:translateY(0) rotate(-6deg)}50%{transform:translateY(-14px) rotate(6deg)}}
+.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.confetti i{position:absolute;top:-30px;width:12px;height:18px;border-radius:3px;animation:fall linear infinite}
+@keyframes fall{to{transform:translateY(980px) rotate(620deg)}}
+</style>
+</head>
+<body>
+<div id="help">Leertaste = weiter · N = Sprechtext · S = Skript · F = Vollbild · C = Uhr</div>
+<div id="viewport"><div id="stage">
+  <div id="slot"></div>
+  <div id="foot">
+    <button class="navb" id="pv" aria-label="Zurück">‹</button>
+    <span id="num"></span>
+    <div id="bar"></div>
+    <span id="clock">0:00 / 8:00</span>
+    <button class="navb" id="nx" aria-label="Weiter">›</button>
+  </div>
+</div></div>
+<div id="notes"></div>
+<div id="script"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* ================================================================
+   HIER DIE ADRESSE DES QUIZ EINTRAGEN (nach dem GitHub-Upload).
+   Der QR-Code auf der letzten Folie wird daraus erzeugt.
+   ================================================================ */
+var QUIZURL = "https://rechthak.github.io/ethik-quiz/";
+
+var SPK = {Luis:{c:"luis",i:"L"}, Ciepi:{c:"ciepi",i:"C"}};
+
+/* ---------------------------------------------------------- Symbole */
+function heartIco(size,col){
+  return '<svg class="ico beat" width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true">'+
+    '<circle cx="50" cy="50" r="47" fill="'+(col||"#E0482F")+'"/>'+
+    '<circle cx="50" cy="50" r="38" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2" stroke-dasharray="3 5"/>'+
+    '<path d="M50 76 C22 58 20 38 32 30 C41 24 48 30 50 36 C52 30 59 24 68 30 C80 38 78 58 50 76Z" fill="#fff"/>'+
+    '<path d="M50 14 L54 24 L46 24Z" fill="#fff"/></svg>';
+}
+function headIco(size,col){
+  return '<svg class="ico" width="'+size+'" height="'+size+'" viewBox="0 0 100 100" aria-hidden="true">'+
+    '<circle cx="50" cy="50" r="47" fill="'+(col||"#2752C7")+'"/>'+
+    '<g class="ripple" fill="none" stroke="#fff" stroke-width="3"><circle cx="50" cy="52" r="30"/><circle cx="50" cy="52" r="30"/><circle cx="50" cy="52" r="30"/></g>'+
+    '<circle cx="50" cy="52" r="17" fill="none" stroke="#fff" stroke-width="9" stroke-dasharray="6.7 6.65"/>'+
+    '<circle cx="50" cy="52" r="15" fill="#fff"/><circle cx="50" cy="52" r="6" fill="'+(col||"#2752C7")+'"/></svg>';
+}
+/* Stilisierte Büsten für die Ahnengalerie */
+function bust(kind){
+  var skin="#E8C9A6", s="";
+  var hair={plato:"#8A8580",ari:"#6E6259",kant:"#EDEDEA",mill:"#5A4A3E",weber:"#3B302A",jonas:"#9A9894"}[kind];
+  s+='<rect width="120" height="120" fill="none"/>';
+  if(kind==="plato"||kind==="ari"){
+    s+='<path d="M20 120 Q24 88 60 84 Q96 88 100 120Z" fill="#F4F1EA"/><path d="M34 120 Q44 96 76 90 L86 120Z" fill="#E4DED0"/>';
+  } else {
+    s+='<path d="M18 120 Q22 88 60 84 Q98 88 102 120Z" fill="#2F3340"/><path d="M52 86 L60 104 L68 86Z" fill="#fff"/>';
+    if(kind==="kant") s+='<path d="M50 86 Q60 96 70 86 L66 100 L54 100Z" fill="#fff"/>';
+    else s+='<path d="M57 92 L60 110 L63 92Z" fill="#8E2A2A"/>';
+  }
+  s+='<rect x="52" y="66" width="16" height="22" fill="'+skin+'"/>';
+  s+='<ellipse cx="60" cy="50" rx="22" ry="25" fill="'+skin+'"/>';
+  if(kind==="kant"){ s+='<path d="M36 50 Q36 22 60 22 Q84 22 84 50 Q80 36 60 34 Q40 36 36 50Z" fill="'+hair+'"/>'+
+     '<circle cx="36" cy="54" r="7" fill="'+hair+'"/><circle cx="84" cy="54" r="7" fill="'+hair+'"/>'; }
+  else if(kind==="jonas"){ s+='<path d="M38 42 Q44 26 60 26 Q76 26 82 42 Q74 34 60 33 Q46 34 38 42Z" fill="'+hair+'"/>'+
+     '<g fill="none" stroke="#222" stroke-width="2.4"><circle cx="51" cy="50" r="7"/><circle cx="69" cy="50" r="7"/><path d="M58 50h4"/></g>'; }
+  else { s+='<path d="M38 46 Q38 24 60 24 Q82 24 82 46 Q76 34 60 32 Q44 34 38 46Z" fill="'+hair+'"/>'; }
+  if(kind==="plato"||kind==="ari"||kind==="weber"){
+    s+='<path d="M40 56 Q42 86 60 88 Q78 86 80 56 Q74 70 60 70 Q46 70 40 56Z" fill="'+hair+'"/>';
+  }
+  if(kind==="plato"||kind==="ari"){ s+='<path d="M36 38 Q60 20 84 38" fill="none" stroke="#5C8A3A" stroke-width="5" stroke-dasharray="6 3" stroke-linecap="round"/>'; }
+  if(kind==="mill"){ s+='<path d="M38 56 Q36 72 44 76" stroke="'+hair+'" stroke-width="6" fill="none"/><path d="M82 56 Q84 72 76 76" stroke="'+hair+'" stroke-width="6" fill="none"/>'; }
+  if(kind!=="jonas"){ s+='<circle cx="51" cy="50" r="2.6" fill="#222"/><circle cx="69" cy="50" r="2.6" fill="#222"/>'; }
+  if(kind!=="plato"&&kind!=="ari"&&kind!=="weber"){ s+='<path d="M52 64 Q60 69 68 64" stroke="#8A4C3C" stroke-width="2.4" fill="none" stroke-linecap="round"/>'; }
+  return '<svg viewBox="0 0 120 120" width="100%" height="100%" aria-hidden="true">'+s+'</svg>';
+}
+function tally(id,a,b,ha,hb){
+  return '<div class="tally" data-tally="'+id+'">'+
+    '<button class="tside a" data-side="a"><span class="tm" data-minus="a">−</span>'+
+      '<span class="tl">'+a+'</span><span class="tn" data-n="a">0</span><span class="th">'+(ha||"Taste 1 · Klick")+'</span></button>'+
+    '<div class="rope"><div class="ln"></div><div class="mid"></div><div class="knot"></div>'+
+      '<span class="pct l" data-p="a">–</span><span class="pct r" data-p="b">–</span></div>'+
+    '<button class="tside b" data-side="b"><span class="tm" data-minus="b">−</span>'+
+      '<span class="tl">'+b+'</span><span class="tn" data-n="b">0</span><span class="th">'+(hb||"Taste 2 · Klick")+'</span></button>'+
+  '</div>';
+}
+
+/* ============================================================ FOLIEN */
+var SL=[];
+function slide(o){ SL.push(o); }
+
+/* 1 — Kaltstart: Gedankenspiel */
+slide({spk:"Luis", sec:"Gedankenspiel 1", min:"0:40",
+  html:
+  '<div class="body" style="gap:60px;align-items:center">'+
+    '<div class="door">'+
+      '<svg viewBox="0 0 360 560" width="360" height="560" aria-hidden="true">'+
+        '<rect x="20" y="10" width="320" height="530" rx="8" fill="#3B2E28"/>'+
+        '<rect x="40" y="30" width="280" height="500" rx="4" fill="#7A4E32"/>'+
+        '<rect x="66" y="60" width="228" height="170" rx="6" fill="none" stroke="#5E3A24" stroke-width="8"/>'+
+        '<rect x="66" y="262" width="228" height="230" rx="6" fill="none" stroke="#5E3A24" stroke-width="8"/>'+
+        '<circle cx="280" cy="300" r="15" fill="#D8B25F"/><circle cx="276" cy="296" r="5" fill="#F4DFA6"/>'+
+        '<rect class="lightsl" x="40" y="528" width="280" height="10" fill="#FFD66B"/>'+
+        '<path class="lightsl" d="M40 538 L0 560 L360 560 L320 538Z" fill="#FFD66B" opacity=".35"/>'+
+      '</svg>'+
+      '<span class="knock" style="left:-40px;top:120px">Klopf!</span>'+
+      '<span class="knock" style="right:-50px;top:250px;animation-delay:.3s">Klopf!</span>'+
+    '</div>'+
+    '<div style="flex:1;display:flex;flex-direction:column;gap:22px">'+
+      '<span class="kick">Stellt euch vor …</span>'+
+      '<h1 class="h1">Deine beste Freundin versteckt sich bei dir.</h1>'+
+      '<p class="lead">Es klopft. Draußen steht jemand, der ihr etwas antun will, und fragt: <b style="color:var(--ink)">„Ist sie bei dir?“</b></p>'+
+      '<div data-step="1">'+tally("door","😶 Ich lüge:<br>„Nein.“","🙋 Ich sage<br>die Wahrheit")+'</div>'+
+      '<div data-step="2" class="card" style="display:flex;gap:20px;align-items:center;padding:18px 24px">'+
+        '<span class="chip g" style="flex:none">Plot-Twist</span>'+
+        '<p class="txt" style="color:var(--ink)">Der Philosoph <b>Immanuel Kant</b> sagt: <b>Du darfst nicht lügen.</b> Nie. Auch hier nicht. Wer hat recht? Genau darum geht es heute.</p>'+
+      '</div>'+
+    '</div>'+
+  '</div>',
+  notes:{say:"Kurzes Gedankenspiel: Eure beste Freundin versteckt sich bei euch. Es klopft. Draußen steht jemand, der ihr etwas antun will: Ist sie bei dir? Hände hoch: Wer lügt? … Wer sagt die Wahrheit? … Plot-Twist: Kant sagt, man darf nie lügen. Auch hier nicht. Wer hat recht? Das klären wir jetzt.",
+    act:["C drücken → Uhr startet","Leertaste → Abstimmung erscheint, Hände zählen, mit Taste 1 / 2 (oder Klick) eintragen","Leertaste → Kant-Twist","Keine Auflösung verraten, nur neugierig machen"]}});
+
+/* 2 — Titel */
+slide({spk:"Luis", sec:"Ethik · Ethische Fragen des Zusammenlebens", min:"0:15",
+  html:
+  '<div class="body" style="align-items:center;gap:60px">'+
+    '<div style="flex:1;display:flex;flex-direction:column;gap:26px">'+
+      '<span class="kick">Gesinnungsethik &amp; Verantwortungsethik</span>'+
+      '<h1 class="display"><span class="herz">Herz</span><br>oder <span class="kopf">Kopf</span>?</h1>'+
+      '<p class="lead" style="max-width:30ch">Zählt, was du <b style="color:var(--herz)">willst</b> — oder was du <b style="color:var(--kopf)">bewirkst</b>?</p>'+
+      '<div style="display:flex;gap:12px;align-items:center;margin-top:8px">'+
+        
+        '<span class="chip" style="font-size:16px">Luis &amp; Ciepi</span>'+
+        '<span class="chip">3 Gedankenspiele · Live-Quiz</span>'+
+      '</div>'+
+    '</div>'+
+    '<div style="position:relative;width:520px;height:520px;flex:none">'+
+      '<div class="bob" style="position:absolute;left:0;top:30px">'+heartIco(300)+'</div>'+
+      '<div class="bob" style="position:absolute;right:0;bottom:10px;animation-delay:-1.7s">'+headIco(300)+'</div>'+
+    '</div>'+
+  '</div>',
+  notes:{say:"Unser Thema: Gesinnungs- und Verantwortungsethik. Kurz: Herz oder Kopf? Zählt, was du willst, oder was du bewirkst? Ciepi, die Grundidee.",
+    act:["Kurz halten","Übergabe an Ciepi"]}});
+
+/* 3 — Grundidee */
+slide({spk:"Ciepi", sec:"1 · Die Grundidee", min:"0:35",
+  html:
+  '<div class="body" style="flex-direction:column;gap:26px">'+
+    '<h2 class="h2">Zwei Fragen, bevor du handelst</h2>'+
+    '<div style="display:flex;align-items:center;gap:0">'+
+      '<div class="card h" style="flex:1;display:flex;gap:22px;align-items:center;padding:28px 34px">'+heartIco(120)+
+        '<div><span class="kick herz">Gesinnungsethik</span><p class="h2" style="font-size:40px;margin-top:6px">„Ist meine <u>Absicht</u> moralisch gut?“</p></div></div>'+
+      '<div class="vs" style="margin:0 -30px;z-index:2">vs</div>'+
+      '<div class="card k" style="flex:1;display:flex;gap:22px;align-items:center;padding:28px 34px 28px 50px">'+headIco(120)+
+        '<div><span class="kick kopf">Verantwortungsethik</span><p class="h2" style="font-size:40px;margin-top:6px">„Sind die <u>Folgen</u> vertretbar?“</p></div></div>'+
+    '</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:26px">'+
+      '<p class="lead" data-step="1" style="font-size:29px">Eine Handlung ist <b>richtig, wenn sie aus guter Gesinnung</b> kommt: nach Werten wie Ehrlichkeit, Gerechtigkeit, Mitgefühl.</p>'+
+      '<p class="lead" data-step="1" style="font-size:29px">Eine Handlung ist <b>richtig, wenn ihre Folgen gut</b> sind. Sie wägt ab, kalkuliert Nebenwirkungen und künftige Entwicklungen.</p>'+
+    '</div>'+
+    '<div data-step="2" class="card" style="display:flex;gap:26px;align-items:center;padding:20px 28px;margin-top:auto">'+
+      '<span style="font-size:60px">💶</span>'+
+      '<div style="flex:1"><span class="kick">Beispiel aus dem Buch · Die Spende</span>'+
+      '<p class="txt" style="color:var(--ink);margin-top:4px">Jemand spendet an eine Hilfsorganisation. <b class="herz">Herz:</b> gut, weil die Absicht aufrichtig ist. <b class="kopf">Kopf:</b> gut erst, wenn das Geld auch wirklich ankommt und hilft.</p></div>'+
+    '</div>'+
+  '</div>',
+  notes:{say:"Vor jeder Handlung kann man zwei Fragen stellen. Gesinnungsethik: Ist meine Absicht gut? Verantwortungsethik: Sind die Folgen vertretbar? Beispiel Spende: Fürs Herz zählt die gute Absicht. Für den Kopf erst, ob das Geld wirklich ankommt.",
+    act:["Leertaste → beide Definitionen","Leertaste → Spenden-Beispiel","Auf die zwei Symbole zeigen: Herz = Absicht, Zahnrad mit Wellen = Folgen, die sich ausbreiten"]}});
+
+/* 4 — Gedankenspiel Klimakleber */
+slide({spk:"Ciepi", sec:"Gedankenspiel 2 · aus dem Buch", min:"0:40",
+  html:
+  '<div class="body" style="flex-direction:column;gap:24px">'+
+    '<div style="display:flex;align-items:baseline;gap:20px"><h2 class="h2">Nach der dritten Stunde …</h2>'+
+      '<span class="chip g">Im Buch heißt einer der beiden übrigens Luis 👀</span></div>'+
+    '<div class="panel3">'+
+      '<div class="comic"><div class="who"><span class="av" style="background:#8A5CF6">M</span>Marc</div>'+
+        '<div class="bubble">„Wir gehen zur Demo und kleben uns auf die Straße — für unsere Zukunft!“</div></div>'+
+      '<div class="comic"><div class="who"><span class="av" style="background:#F2A33A">L</span>Lea</div>'+
+        '<div class="bubble">„Ich bin für Klimaschutz. Aber was ist, wenn ein <b>Rettungswagen</b> durch muss? Ist es das wert?“</div></div>'+
+      '<div class="comic"><div class="who"><span class="av" style="background:#8A5CF6">M</span>Marc</div>'+
+        '<div class="bubble">„Schon klar. Aber wir handeln nach unserer <b>Überzeugung</b>.“</div></div>'+
+    '</div>'+
+    '<div data-step="1" style="margin-top:8px"><p class="h3" style="margin-bottom:14px">Wem gebt ihr recht? Hände hoch!</p>'+
+      tally("kleber","Marc<br><small style=\'font-weight:600;font-size:17px;color:var(--ink3)\'>„Überzeugung zählt“</small>","Lea<br><small style=\'font-weight:600;font-size:17px;color:var(--ink3)\'>„Folgen bedenken“</small>")+'</div>'+
+    '<div data-step="2" style="display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:auto">'+
+      '<div class="kitem h"><b>❤</b><span>Marc denkt <b>gesinnungsethisch</b>: Die gute Absicht rechtfertigt die Aktion.</span></div>'+
+      '<div class="kitem k"><b>⚙</b><span>Lea denkt <b>verantwortungsethisch</b>: Auch eine gute Aktion hat Folgen für andere.</span></div>'+
+    '</div>'+
+  '</div>',
+  notes:{say:"Eine Szene aus dem Buch, und einer heißt sogar Luis. Marc will sich für das Klima auf die Straße kleben. Lea fragt: Und wenn ein Rettungswagen durch muss? Marc: Wir handeln nach unserer Überzeugung. Wer gibt Marc recht, wer Lea? … Marc denkt gesinnungsethisch, Lea verantwortungsethisch.",
+    act:["Luis kurz anschauen beim Spoiler 😄","Leertaste → Abstimmung, Hände zählen","Leertaste → Auflösung","Übergabe an Luis"]}});
+
+/* 5 — Die Unterschiede */
+slide({spk:"Luis", sec:"2 · Die Unterscheidung", min:"0:35",
+  html:
+  '<div class="body" style="flex-direction:column;gap:18px">'+
+    '<h2 class="h2">Der direkte Vergleich</h2>'+
+    '<div class="cmp">'+
+      '<span></span>'+
+      '<div class="hd h">'+heartIco(56,"rgba(255,255,255,.22)")+'<b>Gesinnungsethik</b></div>'+
+      '<div class="hd k">'+headIco(56,"rgba(255,255,255,.22)")+'<b>Verantwortungsethik</b></div>'+
+      '<span class="rl" data-step="1">Leitfrage</span><div class="c h" data-step="1">Ist meine Absicht gut?</div><div class="c k" data-step="1">Sind die Folgen vertretbar?</div>'+
+      '<span class="rl" data-step="2">Blick</span><div class="c h" data-step="2">nach innen: Motiv, Gewissen, Werte</div><div class="c k" data-step="2">nach außen: Wirkung, Nebenfolgen, Zukunft</div>'+
+      '<span class="rl" data-step="3">Maßstab</span><div class="c h" data-step="3">feste Prinzipien, gelten immer</div><div class="c k" data-step="3">Abwägung im Einzelfall</div>'+
+      '<span class="rl" data-step="4">Lügen?</span><div class="c h" data-step="4">nein, Lügen ist falsch</div><div class="c k" data-step="4">ja, wenn es ein Leben rettet</div>'+
+      '<span class="rl" data-step="5">Motto</span><div class="c h" data-step="5" style="font-family:Fraunces,serif;font-style:italic;font-size:26px">„Hauptsache, ich meine es gut.“</div><div class="c k" data-step="5" style="font-family:Fraunces,serif;font-style:italic;font-size:26px">„Hauptsache, es geht gut aus.“</div>'+
+    '</div>'+
+    '<p class="txt" data-step="6" style="margin-top:auto"><b style="color:var(--ink)">Wichtig:</b> Verantwortungsethik heißt nicht „egal, was ich will“. Sie nimmt die Folgen nur <em class="hl">noch wichtiger</em> als die Absicht.</p>'+
+  '</div>',
+  notes:{say:"Der direkte Vergleich: Absicht gegen Folgen. Blick nach innen gegen Blick nach außen. Feste Prinzipien gegen Abwägung. Lügen ist für die eine Seite immer falsch, für die andere okay, wenn es ein Leben rettet. Motto: Hauptsache gut gemeint gegen Hauptsache gut ausgegangen.",
+    act:["Sechs Mal Leertaste, Zeile für Zeile","Bei „Lügen?“ auf Gedankenspiel 1 zurückverweisen"]}});
+
+/* 6 — Max Weber */
+slide({spk:"Luis", sec:"3 · Wer hat's erfunden?", min:"0:30",
+  html:
+  '<div class="body" style="gap:56px;align-items:center">'+
+    '<div style="display:flex;flex-direction:column;align-items:center;gap:14px;flex:none">'+
+      '<div class="medal">'+bust("weber")+'</div>'+
+      '<b style="font-size:32px">Max Weber</b><span class="mono" style="color:var(--ink3);font-size:18px">1864 – 1920 · Soziologe</span>'+
+      '<span class="chip g">1919 · „Politik als Beruf“</span>'+
+    '</div>'+
+    '<div style="flex:1;display:flex;flex-direction:column;gap:24px">'+
+      '<h2 class="h2">Ein Vortrag, zwei Begriffe</h2>'+
+      '<p class="lead" style="font-size:26px">1919, kurz nach dem Ersten Weltkrieg, spricht Weber in München vor Studierenden über „Politik als Beruf“.</p>'+
+      '<div class="card" style="padding:26px 32px"><p class="quote">… alles ethisch orientierte Handeln [kann] unter zwei voneinander grundverschiedenen, unaustragbar gegensätzlichen Maximen stehen: … ‚gesinnungsethisch‘ oder ‚verantwortungsethisch‘.“</p>'+
+        '<p class="src">MAX WEBER, POLITIK ALS BERUF, 1919</p></div>'+
+      '<div data-step="1" style="display:grid;grid-template-columns:1fr 1fr;gap:18px">'+
+        '<div class="kitem h"><b>❤</b><span>Gesinnungsethiker tut das Richtige und <b>überlässt den Erfolg Gott</b>. Für Folgen fühlt er sich nicht zuständig.</span></div>'+
+        '<div class="kitem k"><b>⚙</b><span>Verantwortungsethiker <b>steht für die voraussehbaren Folgen</b> seines Handelns ein.</span></div>'+
+      '</div>'+
+      '<p class="txt" data-step="2"><b style="color:var(--ink)">Webers Urteil:</b> Wer Politik macht, muss <b class="kopf">verantwortungsethisch</b> handeln. Nur mit gutem Gewissen zu regieren, findet er gefährlich.</p>'+
+    '</div>'+
+  '</div>',
+  notes:{say:"Die Begriffe stammen von Max Weber, 1919, Vortrag „Politik als Beruf“. Der Gesinnungsethiker tut das Richtige und überlässt den Erfolg Gott. Der Verantwortungsethiker steht für die Folgen ein. Weber sagt: Politiker müssen verantwortungsethisch handeln.",
+    act:["Zitat langsam vorlesen","Leertaste → Weber-Gegenüberstellung","Leertaste → Webers Urteil","Übergabe an Ciepi"]}});
+
+/* 7 — Ahnengalerie */
+slide({spk:"Ciepi", sec:"3 · Philosophen & Vertreter", min:"0:40",
+  html:
+  '<div class="body" style="flex-direction:column">'+
+    '<div style="display:flex;align-items:baseline;gap:20px"><h2 class="h2">Die Ahnengalerie</h2>'+
+      '<span class="chip h">❤ Wurzeln der Gesinnungsethik</span><span class="chip k">⚙ Wurzeln der Verantwortungsethik</span></div>'+
+    '<div class="tline" style="margin-top:20px">'+
+      '<div class="axis"></div><div class="gap">~2000 J.</div>'+
+      '<div class="ph up dot" data-step="1" style="left:0;--pc:var(--herz)"><div class="md">'+bust("plato")+'</div>'+
+        '<span class="nm">Platon &amp; Aristoteles</span><span class="yr">428 – 322 v. Chr.</span></div>'+
+      '<div class="ph dn" data-step="1" style="left:0;--pc:var(--herz)"><span class="chip h tg">Tugendethik</span>'+
+        '<span class="ds">Gut handelt, wer <b>gute Haltungen</b> (Tugenden) hat: ein ausgewogenes, glückliches Leben.</span></div>'+
+      '<div class="ph up dot" data-step="2" style="left:30%;--pc:var(--herz)"><div class="md">'+bust("kant")+'</div>'+
+        '<span class="nm">Immanuel Kant</span><span class="yr">1724 – 1804</span></div>'+
+      '<div class="ph dn" data-step="2" style="left:30%;--pc:var(--herz)"><span class="chip h tg">Deontologie · Pflichtethik</span>'+
+        '<span class="ds">Das <b>innere Gesetz der Vernunft</b> gilt immer, egal was folgt. Darum: nie lügen.</span></div>'+
+      '<div class="ph up dot" data-step="3" style="left:49%;--pc:var(--kopf)"><div class="md">'+bust("mill")+'</div>'+
+        '<span class="nm">Bentham &amp; Mill</span><span class="yr">1748 – 1873</span></div>'+
+      '<div class="ph dn" data-step="3" style="left:49%;--pc:var(--kopf)"><span class="chip k tg">Utilitarismus</span>'+
+        '<span class="ds">Richtig ist, was das <b>größte Glück der größten Zahl</b> bringt. Nur Folgen zählen.</span></div>'+
+      '<div class="ph up dot" data-step="4" style="left:66%;--pc:var(--gold)"><div class="md">'+bust("weber")+'</div>'+
+        '<span class="nm">Max Weber</span><span class="yr">1919</span></div>'+
+      '<div class="ph dn" data-step="4" style="left:66%;--pc:var(--gold)"><span class="chip g tg">gibt beiden den Namen</span>'+
+        '<span class="ds">Prägt das Gegensatzpaar.</span></div>'+
+      '<div class="ph up dot" data-step="5" style="left:83%;--pc:var(--kopf)"><div class="md">'+bust("jonas")+'</div>'+
+        '<span class="nm">Hans Jonas</span><span class="yr">1979</span></div>'+
+      '<div class="ph dn" data-step="5" style="left:83%;--pc:var(--kopf)"><span class="chip k tg">Prinzip Verantwortung</span>'+
+        '<span class="ds">Ethik für das <b>Technik-Zeitalter</b>. Gleich mehr.</span></div>'+
+    '</div>'+
+  '</div>',
+  notes:{say:"Die Wurzeln: Platon und Aristoteles mit der Tugendethik, Kant mit der Pflichtethik, nie lügen. Das ist die Herz-Seite. Auf der Kopf-Seite: Bentham und Mill, größtes Glück für die meisten. 1919 gibt Weber beiden den Namen, 1979 bringt Hans Jonas die Verantwortung ins Technik-Zeitalter.",
+    act:["Fünf Mal Leertaste, Person für Person","Farben erklären: rot = Herz, blau = Kopf"]}});
+
+/* 8 — Hans Jonas + Nah/Fern */
+slide({spk:"Ciepi", sec:"3 · Hans Jonas & die Fernethik", min:"0:35",
+  html:
+  '<div class="body" style="gap:50px;align-items:center">'+
+    '<div style="flex:1;display:flex;flex-direction:column;gap:22px">'+
+      '<div style="display:flex;gap:20px;align-items:center"><div class="medal" style="width:120px;height:120px;border-width:5px">'+bust("jonas")+'</div>'+
+        '<div><b style="font-size:34px">Hans Jonas</b><div class="mono" style="color:var(--ink3);font-size:17px;margin-top:4px">„Das Prinzip Verantwortung“, 1979</div></div></div>'+
+      '<p class="txt">Moderne Technik gibt uns <b>Macht über die Natur und die Zukunft</b>. Deshalb braucht es einen neuen kategorischen Imperativ:</p>'+
+      '<div class="card k" style="padding:22px 28px"><p class="quote" style="font-size:31px">Handle so, dass die Wirkungen deiner Handlung verträglich sind mit der Permanenz echten menschlichen Lebens auf Erden.“</p><p class="src">HANS JONAS, 1979</p></div>'+
+      '<div data-step="5" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">'+
+        '<div class="kitem k" style="background:#EEF2FC"><b>👪</b><span><b>Nahethik:</b> Verantwortung für Menschen um mich herum.</span></div>'+
+        '<div class="kitem k"><b>🌍</b><span><b>Fernethik:</b> für Fremde, die Umwelt und <b>künftige Generationen</b>.</span></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="rings">'+
+      '<div class="ring on" style="width:140px;height:140px;background:var(--kopf);z-index:5;align-items:center;color:#fff;font-weight:800;font-size:26px">ICH</div>'+
+      '<div class="ring" data-ring="1" style="width:270px;height:270px;background:#C9D6F6;z-index:4"><span>👪 Familie &amp; Freunde</span></div>'+
+      '<div class="ring" data-ring="2" style="width:400px;height:400px;background:#DCE4F9;z-index:3"><span>🏙 Nachbarschaft &amp; Land</span></div>'+
+      '<div class="ring" data-ring="3" style="width:520px;height:520px;background:#E9EEFB;z-index:2"><span>🌍 Menschen weltweit &amp; Natur</span></div>'+
+      '<div class="ring" data-ring="4" style="width:636px;height:636px;background:#F3F6FD;border:3px dashed var(--kopf);z-index:1"><span>👶 Generationen 2100+</span></div>'+
+    '</div>'+
+  '</div>',
+  onStep:function(st,el){ var r=el.querySelectorAll("[data-ring]"); for(var i=0;i<r.length;i++) r[i].classList.toggle("on", +r[i].getAttribute("data-ring")<=st); },
+  steps:5,
+  notes:{say:"Jonas sagt: Technik gibt uns riesige Macht über die Zukunft. Darum: Handle so, dass auch künftig menschliches Leben auf der Erde möglich bleibt. Die Kreise zeigen: Unser Handeln wirkt von Familie bis zu Menschen, die noch nicht geboren sind. Innen Nahethik, außen Fernethik.",
+    act:["Leertaste 4× → Kreise wachsen nach außen","Leertaste → Nah- und Fernethik","Übergabe an Luis"]}});
+
+/* 9 — Schnellrunde */
+function fcard(n, q, cls, v, why){
+  return '<div class="flip" data-flip="'+n+'" style="height:300px"><div class="in">'+
+    '<div class="fa"><span class="n">FALL '+n+'</span><p class="q">'+q+'</p>'+
+      '<div class="ask"><span class="chip h">❤ Herz?</span><span class="chip k">⚙ Kopf?</span></div></div>'+
+    '<div class="fb '+cls+'"><span class="n" style="color:rgba(255,255,255,.7)">FALL '+n+'</span><span class="v">'+v+'</span><p>'+why+'</p><p style="margin-top:auto;font-size:17px;opacity:.78;font-style:italic">'+q+'</p></div>'+
+  '</div></div>';
+}
+slide({spk:"Luis", sec:"4 · Anwendung · Schnellrunde", min:"0:45",
+  html:
+  '<div class="body" style="flex-direction:column;gap:22px">'+
+    '<div style="display:flex;align-items:baseline;gap:22px"><h2 class="h2">Herz oder Kopf? Ruft rein!</h2>'+
+      '<span class="kick">Leertaste dreht die nächste Karte um</span></div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">'+
+      fcard(1,"Eine Schülerin sagt ihrem Lehrer die Wahrheit über die vergessene Hausaufgabe, obwohl sie dafür eine schlechte Note bekommt.","h","❤ Herz","Ehrlichkeit als Prinzip, die schlechte Folge für sie selbst nimmt sie in Kauf.")+
+      fcard(2,"Bevor du spendest, prüfst du, ob die Organisation das Geld wirklich zu den Bedürftigen bringt.","k","⚙ Kopf","Du achtest auf die Wirkung, nicht nur auf deine gute Absicht.")+
+      fcard(3,"Eine Ärztin gibt aus Mitgefühl ein kaum getestetes Medikament. Es schadet mehr, als es nützt.","h","❤ Herz","Starke Absicht, aber die Folgen wurden nicht bedacht. Beispiel aus dem Buch für die Kritik.")+
+      fcard(4,"Eine Regierung beschließt strenge Klimagesetze, obwohl die Wirtschaft kurzfristig verliert.","k","⚙ Kopf","Abwägung: kurzfristige Kosten gegen langfristigen Schutz künftiger Generationen (Fernethik).")+
+    '</div>'+
+  '</div>',
+  steps:4,
+  onStep:function(st,el){ var f=el.querySelectorAll("[data-flip]"); for(var i=0;i<f.length;i++) f[i].classList.toggle("open", +f[i].getAttribute("data-flip")<=st); },
+  notes:{say:"Ihr seid dran, ruft rein: Herz oder Kopf? Fall 1, Ehrlichkeit trotz schlechter Note: Herz. Fall 2, prüfen, ob die Spende ankommt: Kopf. Fall 3, Ärztin gibt aus Mitgefühl ein ungetestetes Medikament: Herz. Fall 4, Klimagesetze trotz Kosten: Kopf.",
+    act:["Fall vorlesen → Klasse rufen lassen → Leertaste dreht um","Karten lassen sich auch anklicken","Übergabe an Ciepi"]}});
+
+/* 10 — Anwendungsbereiche */
+slide({spk:"Ciepi", sec:"4 · Wo begegnet uns das?", min:"0:25",
+  html:
+  '<div class="body" style="flex-direction:column;gap:24px">'+
+    '<h2 class="h2">Vier Bereiche, in denen beide Fragen zählen</h2>'+
+    '<div class="fields">'+
+      '<div class="field" data-step="1"><span class="fi">🏛</span><h3>Politik</h3><p>Gesetze wirken auf Millionen. Weber verlangt: für Folgen geradestehen.</p>'+
+        '<div class="duo"><div class="h">❤ Ist das Gesetz gerecht?</div><div class="k">⚙ Wen trifft es, was kostet es?</div></div></div>'+
+      '<div class="field" data-step="2"><span class="fi">🩺</span><h3>Medizin</h3><p>Mitgefühl allein reicht nicht, Behandlungen müssen sicher sein.</p>'+
+        '<div class="duo"><div class="h">❤ Will ich helfen?</div><div class="k">⚙ Ist es getestet und sicher?</div></div></div>'+
+      '<div class="field" data-step="3"><span class="fi">🤖</span><h3>Technik</h3><p>Künstliche Intelligenz und Gentechnik: Folgen sind groß und oft unbekannt.</p>'+
+        '<div class="duo"><div class="h">❤ Achten wir die Würde?</div><div class="k">⚙ Was passiert in 20 Jahren?</div></div></div>'+
+      '<div class="field" data-step="4"><span class="fi">🌊</span><h3>Umwelt</h3><p>Weniger Plastik: nicht nur Müll hier, sondern Meere und künftige Generationen.</p>'+
+        '<div class="duo"><div class="h">❤ Will ich die Natur schützen?</div><div class="k">⚙ Wirkt mein Handeln wirklich?</div></div></div>'+
+    '</div>'+
+    '<p class="lead" data-step="5" style="margin-top:auto">Im echten Leben stellt man <em class="hl">beide Fragen</em>, nur mit unterschiedlichem Gewicht.</p>'+
+  '</div>',
+  notes:{say:"Wo begegnet uns das? In Politik, Medizin, Technik und Umwelt. Überall stellt man beide Fragen, nur unterschiedlich stark.",
+    act:["Vier Mal Leertaste, ein Bereich pro Klick","Leertaste → Merksatz","Übergabe an Luis"]}});
+
+/* 11 — Kritik (Waage) */
+slide({spk:"Luis", spk2:"Ciepi", sec:"5 · Kritik", min:"0:40",
+  html:
+  '<div class="body" style="gap:34px;align-items:center">'+
+    '<div style="flex:1;display:flex;flex-direction:column;gap:12px">'+
+      '<span class="kick herz">Kritik an der Gesinnungsethik · Luis</span>'+
+      '<div class="klist">'+
+        '<div class="kitem h" data-step="1"><b>①</b><span><b>Folgen werden vernachlässigt.</b> Gut gemeint ist nicht gut gemacht (siehe Ärztin).</span></div>'+
+        '<div class="kitem h" data-step="2"><b>②</b><span><b>Kann stur machen:</b> „Ich hab ja recht“, egal wer darunter leidet.</span></div>'+
+        '<div class="kitem h" data-step="3"><b>③</b><span>Laut Weber <b>ungeeignet für die Politik</b>.</span></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="scale" id="scale">'+
+      '<div class="foot"></div><div class="post"></div><div class="pivot"></div>'+
+      '<div class="beam"><div class="bar"></div>'+
+        '<div class="pan l"><div class="str"></div><div class="dish"></div><div class="w" id="wl"></div></div>'+
+        '<div class="pan r"><div class="str"></div><div class="dish"></div><div class="w" id="wr"></div></div>'+
+      '</div>'+
+      '<div data-step="7" class="pop" style="position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);white-space:nowrap">'+
+        '<span class="chip g" style="font-size:22px;padding:10px 22px">⚖ Beide haben blinde Flecken</span></div>'+
+    '</div>'+
+    '<div style="flex:1;display:flex;flex-direction:column;gap:12px">'+
+      '<span class="kick kopf">Kritik an der Verantwortungsethik · Ciepi</span>'+
+      '<div class="klist">'+
+        '<div class="kitem k" data-step="4"><b>①</b><span><b>Folgen sind oft nicht vorhersehbar.</b> Niemand kennt die Zukunft.</span></div>'+
+        '<div class="kitem k" data-step="5"><b>②</b><span><b>Heiligt der Zweck die Mittel?</b> Werte werden verhandelbar.</span></div>'+
+        '<div class="kitem k" data-step="6"><b>③</b><span><b>Wer entscheidet</b>, welche Folgen zählen und wer draufzahlt?</span></div>'+
+      '</div>'+
+    '</div>'+
+  '</div>',
+  steps:7,
+  onStep:function(st,el){
+    var l=Math.min(st,3), r=Math.max(0,Math.min(st-3,3));
+    var wl=el.querySelector("#wl"), wr=el.querySelector("#wr");
+    wl.innerHTML=new Array(l*2+1).join("<i></i>"); wr.innerHTML=new Array(r*2+1).join("<i></i>");
+    el.querySelector(".beam").style.setProperty("--tilt", ((r-l)*5)+"deg");
+  },
+  notes:{say:"LUIS: Kritik an der Gesinnungsethik: Folgen werden vernachlässigt, sie kann stur machen, und für Politik ist sie laut Weber ungeeignet. — CIEPI: Kritik an der Verantwortungsethik: Folgen sind oft nicht vorhersehbar, der Zweck könnte die Mittel heiligen, und wer entscheidet, welche Folgen zählen? Beide haben blinde Flecken.",
+    act:["Luis: 3× Leertaste, Waage kippt nach links","Ciepi übernimmt: 3× Leertaste, Waage gleicht aus","Leertaste → „Beide haben blinde Flecken“"]}});
+
+/* 12 — Gedankenspiel 3: Ethikkomitee */
+slide({spk:"Ciepi", sec:"Gedankenspiel 3 · Herausforderungen heute", min:"0:40",
+  html:
+  '<div class="body" style="flex-direction:column;gap:20px">'+
+    '<div style="display:flex;gap:26px;align-items:center">'+
+      '<span style="font-size:84px">🏥</span>'+
+      '<div><span class="kick">Ihr seid jetzt das Ethikkomitee eines Krankenhauses</span>'+
+      '<h2 class="h2" style="margin-top:6px">Soll eine KI bei Diagnosen helfen?</h2></div>'+
+    '</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">'+
+      '<div class="card" style="padding:18px 24px"><span class="kick" style="color:#2E7D4F">Dafür</span>'+
+        '<p class="txt" style="margin-top:6px">✔ schneller und oft genauer als Ärztinnen und Ärzte<br>✔ kann Leben retten</p></div>'+
+      '<div class="card" style="padding:18px 24px"><span class="kick" style="color:var(--herz2)">Bedenken</span>'+
+        '<p class="txt" style="margin-top:6px">✖ Datenschutz der Patient:innen<br>✖ weniger Menschlichkeit · Jobs fallen weg</p></div>'+
+    '</div>'+
+    '<div data-step="1">'+tally("ki","✅ Einführen","⛔ Nicht einführen")+'</div>'+
+    '<div data-step="2" class="card" style="display:flex;gap:22px;align-items:center;padding:18px 26px;margin-top:auto">'+
+      '<span class="chip g" style="flex:none">Die Herausforderung</span>'+
+      '<p class="txt" style="color:var(--ink)">Die Folgen sind <b>unsicher</b>, die Verantwortung ist <b>verteilt</b> (wer haftet, wenn die KI irrt?) und viele Betroffene sind <b>weit weg oder noch nicht geboren</b>. Darum braucht es <b class="herz">Herz</b> <i>und</i> <b class="kopf">Kopf</b>.</p>'+
+    '</div>'+
+  '</div>',
+  notes:{say:"Ihr seid das Ethikkomitee eines Spitals: Soll eine KI bei Diagnosen helfen? Sie ist schneller und genauer, aber es gibt Datenschutz- und Job-Sorgen. Hände hoch: einführen oder nicht? … Genau das ist die Herausforderung: unsichere Folgen, verteilte Verantwortung, Betroffene weit weg.",
+    act:["Leertaste → Abstimmung, zählen, eintragen","Leertaste → Herausforderung","Übergabe an Luis"]}});
+
+/* 13 — Schluss */
+slide({spk:"Luis", spk2:"Ciepi", sec:"Fazit", min:"0:30",
+  html:
+  '<div class="body" style="flex-direction:column;gap:26px">'+
+    '<div class="eq">'+
+      '<div class="t">'+heartIco(150)+'<span class="herz">gute Absicht</span></div><span class="op">+</span>'+
+      '<div class="t">'+headIco(150)+'<span class="kopf">gute Folgen</span></div><span class="op">=</span>'+
+      '<div class="t"><div style="width:150px;height:150px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:80px;box-shadow:0 0 0 10px var(--golds)">⚖</div><span style="color:#8B6914">verantwortungsvoll handeln</span></div>'+
+    '</div>'+
+    '<div class="card" style="padding:22px 32px;text-align:center"><p class="quote" style="font-size:31px">Gesinnungsethik und Verantwortungsethik [sind] nicht absolute Gegensätze, sondern Ergänzungen, die zusammen erst den echten Menschen ausmachen …“</p><p class="src">MAX WEBER, POLITIK ALS BERUF, 1919</p></div>'+
+    '<div class="take" data-step="1">'+
+      '<div class="card"><b>1</b><p><b style="color:var(--ink)">Absicht allein</b> reicht nicht. Denk an die Folgen.</p></div>'+
+      '<div class="card"><b>2</b><p><b style="color:var(--ink)">Folgen allein</b> reichen nicht. Manche Werte sind nicht verhandelbar.</p></div>'+
+      '<div class="card"><b>3</b><p>Heute zählt die <b style="color:var(--ink)">Fernethik</b>: Welt und Zukunft mitdenken.</p></div>'+
+    '</div>'+
+    '<p class="lead" data-step="2" style="text-align:center">Und Luis aus dem Buch? Er geht mit zur Demo, aber <em class="hl">Leas Worte bleiben ihm im Kopf.</em></p>'+
+  '</div>',
+  notes:{say:"LUIS: Gute Absicht plus gute Folgen ergibt verantwortungsvolles Handeln. Sogar Weber sagt: Die beiden sind Ergänzungen. — CIEPI: Absicht allein reicht nicht, Folgen allein auch nicht, und heute müssen wir Welt und Zukunft mitdenken. Und jetzt: Handys raus!",
+    act:["Luis: Gleichung + Weber-Zitat","Leertaste → Ciepi: drei Merksätze","Leertaste → Schlusssatz","Quiz-Leitung im zweiten Tab schon offen haben!"]}});
+
+/* 14 — Quiz */
+slide({spk:"Luis", spk2:"Ciepi", sec:"Live-Quiz", min:"0:20", quiz:true,
+  html:
+  '<div class="confetti" id="conf"></div>'+
+  '<div class="body" style="gap:60px;align-items:center">'+
+    '<div class="qrwrap" id="qrbox"><canvas id="qrcv" width="380" height="380"></canvas></div>'+
+    '<div style="flex:1;display:flex;flex-direction:column;gap:24px">'+
+      '<span class="kick">Handys raus · Live-Quiz</span>'+
+      '<h1 class="h1">Das Gewissens-Duell</h1>'+
+      '<div class="url" id="qurl"></div>'+
+      '<div class="steps3">'+
+        '<div><b>1</b>QR-Code scannen oder Adresse eintippen</div>'+
+        '<div><b>2</b>Raumcode vom Quiz-Bildschirm eingeben</div>'+
+        '<div><b>3</b>Figur bauen und euer Team wählen:</div>'+
+      '</div>'+
+      '<div class="teams">'+
+        '<div class="team h"><span style="font-size:44px">❤</span><div>Team Herz<small>Gesinnungsethik</small></div></div>'+
+        '<div class="team k"><span style="font-size:44px">⚙</span><div>Team Kopf<small>Verantwortungsethik</small></div></div>'+
+      '</div>'+
+      '<div class="dancers"><span>🕺</span><span>💃</span><span>🧑‍🎓</span><span>🎉</span></div>'+
+    '</div>'+
+  '</div>',
+  notes:{say:"QR-Code scannen, Raumcode eingeben, Figur bauen, Team wählen: Herz oder Kopf. Los geht's!",
+    act:["Zum Quiz-Tab wechseln (Leitung läuft schon), dort steht der Raumcode","Warten, bis die meisten drin sind, dann „Quiz starten“"]}});
+
+/* ============================================================ MOTOR */
+var cur=0, step=0, maxStep=0, T={};
+var slot=document.getElementById("slot"), stage=document.getElementById("stage");
+var notesEl=document.getElementById("notes"), scriptEl=document.getElementById("script");
+
+function fit(){
+  var s=Math.min(window.innerWidth/1600, window.innerHeight/900);
+  stage.style.transform="scale("+s+")";
+}
+window.addEventListener("resize",fit); fit();
+
+function spkChip(o){
+  var a=SPK[o.spk], h='<div class="spk '+a.c+'"><i>'+a.i+'</i>'+o.spk;
+  if(o.spk2) h+=' <small>→ '+o.spk2+'</small>';
+  return h+'</div>';
+}
+function render(){
+  var o=SL[cur];
+  slot.innerHTML='<section class="slide"><div class="top"><span class="sec">'+o.sec+'</span>'+spkChip(o)+'</div>'+o.html+'</section>';
+  var el=slot.firstChild, st=el.querySelectorAll("[data-step]"), m=0;
+  for(var i=0;i<st.length;i++) m=Math.max(m,+st[i].getAttribute("data-step"));
+  maxStep=Math.max(m, o.steps||0);
+  wire(el); apply(); foot(); notes();
+  if(o.quiz) quizSlide(el);
+  try{ history.replaceState(null,"","#"+(cur+1)); }catch(e){}
+}
+function apply(){
+  var el=slot.firstChild; if(!el) return;
+  var st=el.querySelectorAll("[data-step]");
+  for(var i=0;i<st.length;i++) st[i].classList.toggle("on", +st[i].getAttribute("data-step")<=step);
+  if(SL[cur].onStep) SL[cur].onStep(step, el);
+}
+function next(){
+  startClock();
+  if(step<maxStep){ step++; apply(); }
+  else if(cur<SL.length-1){ cur++; step=0; render(); }
+}
+function prev(){
+  if(step>0){ step--; apply(); }
+  else if(cur>0){ cur--; render(); step=maxStep; apply(); }
+}
+function foot(){
+  document.getElementById("num").textContent=(cur+1)+" / "+SL.length;
+  var b=document.getElementById("bar"), h="";
+  SL.forEach(function(o,i){ h+='<i class="'+(o.spk==="Luis"?"l":"c")+(i<cur?" done":"")+(i===cur?" now":"")+'" title="'+o.spk+'"></i>'; });
+  b.innerHTML=h;
+}
+function notes(){
+  var o=SL[cur], n=SL[cur+1];
+  notesEl.innerHTML='<div class="nh"><b style="background:var(--'+SPK[o.spk].c+')">'+o.spk+(o.spk2?" + "+o.spk2:"")+'</b>'+
+    'Folie '+(cur+1)+' · ca. '+o.min+(n?' · danach: '+n.spk:'')+'</div>'+
+    '<div>'+o.notes.say+'</div><ul>'+o.notes.act.map(function(a){return "<li>"+a+"</li>";}).join("")+'</ul>';
+}
+function buildScript(){
+  var h='<button class="x" id="sx">Schließen (S)</button><div class="sw"><span class="kick">Sprechtext · Luis &amp; Ciepi</span>'+
+    '<h1>Herz oder Kopf?</h1><p class="txt" style="margin-bottom:20px">Mit Strg+P ausdrucken. Gesamtzeit ca. 8 Minuten.</p>';
+  SL.forEach(function(o,i){
+    h+='<div class="row"><div class="who" style="color:var(--'+SPK[o.spk].c+')">'+(i+1)+'. '+o.spk+(o.spk2?" + "+o.spk2:"")+
+      '<small>'+o.min+' min</small></div><div><div class="kick" style="margin-bottom:6px">'+o.sec+'</div>'+
+      '<div class="say">'+o.notes.say+'</div><div class="act">▸ '+o.notes.act.join(" · ")+'</div></div></div>';
+  });
+  scriptEl.innerHTML=h+'</div>';
+  document.getElementById("sx").onclick=function(){ scriptEl.classList.remove("show"); };
+}
+
+/* Abstimmungen: Zählerstand bleibt beim Hin- und Herblättern erhalten */
+function wire(el){
+  Array.prototype.forEach.call(el.querySelectorAll("[data-tally]"),function(t){
+    var id=t.getAttribute("data-tally"); if(!T[id]) T[id]={a:0,b:0};
+    t.querySelectorAll("[data-side]").forEach(function(b){
+      b.onclick=function(e){ if(e.target.hasAttribute("data-minus")) return; T[id][b.getAttribute("data-side")]++; paintT(t); };
+    });
+    t.querySelectorAll("[data-minus]").forEach(function(m){
+      m.onclick=function(e){ e.stopPropagation(); var s=m.getAttribute("data-minus"); T[id][s]=Math.max(0,T[id][s]-1); paintT(t); };
+    });
+    paintT(t);
+  });
+  Array.prototype.forEach.call(el.querySelectorAll("[data-flip]"),function(f){
+    f.onclick=function(){ f.classList.toggle("open"); };
+  });
+}
+function paintT(t){
+  var v=T[t.getAttribute("data-tally")], tot=v.a+v.b;
+  t.querySelector('[data-n="a"]').textContent=v.a; t.querySelector('[data-n="b"]').textContent=v.b;
+  var pa=tot?Math.round(v.a/tot*100):50;
+  /* Mehr Stimmen ziehen das Seil auf die eigene Seite */
+  t.querySelector(".knot").style.setProperty("--p",(tot?(100-pa):50)+"%");
+  t.querySelector('[data-p="a"]').textContent=tot?pa+"%":"–";
+  t.querySelector('[data-p="b"]').textContent=tot?(100-pa)+"%":"–";
+}
+function tallyKey(side){
+  var t=slot.querySelector("[data-tally]"); if(!t) return;
+  var host=t.closest("[data-step]"); if(host && !host.classList.contains("on")) return;
+  T[t.getAttribute("data-tally")][side]++; paintT(t);
+}
+
+function quizSlide(el){
+  document.getElementById("qurl").textContent=QUIZURL.replace(/^https?:\/\//,"").replace(/\/$/,"");
+  var cv=document.getElementById("qrcv");
+  if(typeof QRious!=="undefined"){ try{ new QRious({element:cv,value:QUIZURL,size:760,level:"M",background:"#ffffff",foreground:"#17172B",padding:0}); }catch(e){} }
+  else document.getElementById("qrbox").style.display="none";
+  var c=document.getElementById("conf"), cols=["#E0482F","#2752C7","#C4952B","#0C9483","#6A4DE0"];
+  for(var i=0;i<40;i++){ var d=document.createElement("i"); d.style.left=Math.random()*100+"%";
+    d.style.background=cols[i%cols.length]; d.style.animationDuration=(4+Math.random()*4)+"s";
+    d.style.animationDelay=(-Math.random()*8)+"s"; d.style.opacity=.55; c.appendChild(d); }
+}
+
+/* ---------------------------------------------------------- Uhr */
+var t0=0, run=false, acc=0;
+function startClock(){ if(!run && !acc){ t0=Date.now(); run=true; } }
+function toggleClock(){ if(run){ acc+=Date.now()-t0; run=false; } else { t0=Date.now(); run=true; } }
+setInterval(function(){
+  var ms=acc+(run?Date.now()-t0:0), s=Math.floor(ms/1000), c=document.getElementById("clock");
+  c.textContent=Math.floor(s/60)+":"+("0"+s%60).slice(-2)+" / 8:00";
+  c.className=(run?"run":"")+(s>480?" over":"");
+},500);
+
+/* ---------------------------------------------------------- Tasten */
+document.addEventListener("keydown",function(e){
+  var k=e.key;
+  if(k===" "||k==="ArrowRight"||k==="PageDown"||k==="Enter"){ e.preventDefault(); next(); }
+  else if(k==="ArrowLeft"||k==="PageUp"||k==="Backspace"){ e.preventDefault(); prev(); }
+  else if(k==="n"||k==="N") notesEl.classList.toggle("show");
+  else if(k==="s"||k==="S"){ buildScript(); scriptEl.classList.toggle("show"); }
+  else if(k==="c"||k==="C") toggleClock();
+  else if(k==="f"||k==="F"){ if(document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen().catch(function(){}); }
+  else if(k==="1") tallyKey("a");
+  else if(k==="2") tallyKey("b");
+  else if(k==="Home"){ cur=0; step=0; render(); }
+  else if(k==="End"){ cur=SL.length-1; step=0; render(); }
+});
+document.getElementById("nx").onclick=next;
+document.getElementById("pv").onclick=prev;
+
+var h=parseInt((location.hash||"").slice(1),10);
+if(h>=1 && h<=SL.length) cur=h-1;
+render();
+})();
+</script>
+</body>
+</html>
