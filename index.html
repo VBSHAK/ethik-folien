@@ -139,6 +139,8 @@ em.hl{font-style:normal;background:linear-gradient(transparent 58%, var(--golds)
 #bar i.l::after,#bar i.c::after{content:"";position:absolute;inset:0;border-radius:4px;opacity:0;transition:opacity .3s}
 #bar i.l::after{background:var(--luis)} #bar i.c::after{background:var(--ciepi)}
 #bar i.done::after{opacity:.45} #bar i.now::after{opacity:1}
+#who{font-weight:800;font-size:17px;white-space:nowrap}
+#who small{font-weight:600;font-size:14px;color:var(--ink3)}
 #num{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:15px;color:var(--ink3);letter-spacing:.08em}
 #clock{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:15px;color:var(--ink3);min-width:9ch;text-align:right}
 #clock.run{color:var(--ink)} #clock.over{color:var(--herz)}
@@ -298,14 +300,14 @@ em.hl{font-style:normal;background:linear-gradient(transparent 58%, var(--golds)
 </style>
 </head>
 <body>
-<div id="help">Leertaste = weiter · N = Sprechtext · S = Skript · F = Vollbild · C = Uhr</div>
+
 <div id="viewport"><div id="stage">
   <div id="slot"></div>
   <div id="foot">
     <button class="navb" id="pv" aria-label="Zurück">‹</button>
     <span id="num"></span>
     <div id="bar"></div>
-    <span id="clock">0:00 / 8:00</span>
+    <span id="who"></span><span id="clock">0:00 / 8:00</span>
     <button class="navb" id="nx" aria-label="Weiter">›</button>
   </div>
 </div></div>
@@ -638,7 +640,7 @@ slide({spk:"Luis", spk2:"Ciepi", sec:"5 · Kritik", min:"0:40",
   html:
   '<div class="body" style="gap:34px;align-items:center">'+
     '<div style="flex:1;display:flex;flex-direction:column;gap:12px">'+
-      '<span class="kick herz">Kritik an der Gesinnungsethik · Luis</span>'+
+      '<span class="kick herz">Kritik an der Gesinnungsethik</span>'+
       '<div class="klist">'+
         '<div class="kitem h" data-step="1"><b>①</b><span><b>Folgen werden vernachlässigt.</b> Gut gemeint ist nicht gut gemacht (siehe Ärztin).</span></div>'+
         '<div class="kitem h" data-step="2"><b>②</b><span><b>Kann stur machen:</b> „Ich hab ja recht“, egal wer darunter leidet.</span></div>'+
@@ -655,7 +657,7 @@ slide({spk:"Luis", spk2:"Ciepi", sec:"5 · Kritik", min:"0:40",
         '<span class="chip g" style="font-size:22px;padding:10px 22px">⚖ Beide haben blinde Flecken</span></div>'+
     '</div>'+
     '<div style="flex:1;display:flex;flex-direction:column;gap:12px">'+
-      '<span class="kick kopf">Kritik an der Verantwortungsethik · Ciepi</span>'+
+      '<span class="kick kopf">Kritik an der Verantwortungsethik</span>'+
       '<div class="klist">'+
         '<div class="kitem k" data-step="4"><b>①</b><span><b>Folgen sind oft nicht vorhersehbar.</b> Niemand kennt die Zukunft.</span></div>'+
         '<div class="kitem k" data-step="5"><b>②</b><span><b>Heiligt der Zweck die Mittel?</b> Werte werden verhandelbar.</span></div>'+
@@ -760,7 +762,7 @@ function spkChip(o){
 }
 function render(){
   var o=SL[cur];
-  slot.innerHTML='<section class="slide"><div class="top"><span class="sec">'+o.sec+'</span>'+spkChip(o)+'</div>'+o.html+'</section>';
+  slot.innerHTML='<section class="slide"><div class="top"><span class="sec">'+o.sec+'</span></div>'+o.html+'</section>';
   var el=slot.firstChild, st=el.querySelectorAll("[data-step]"), m=0;
   for(var i=0;i<st.length;i++) m=Math.max(m,+st[i].getAttribute("data-step"));
   maxStep=Math.max(m, o.steps||0);
@@ -785,6 +787,7 @@ function prev(){
 }
 function foot(){
   document.getElementById("num").textContent=(cur+1)+" / "+SL.length;
+  var o=SL[cur]; document.getElementById("who").innerHTML='<span style="color:var(--'+SPK[o.spk].c+')">'+o.spk+'</span>'+(o.spk2?' <small>→ '+o.spk2+'</small>':"");
   var b=document.getElementById("bar"), h="";
   SL.forEach(function(o,i){ h+='<i class="'+(o.spk==="Luis"?"l":"c")+(i<cur?" done":"")+(i===cur?" now":"")+'" title="'+o.spk+'"></i>'; });
   b.innerHTML=h;
