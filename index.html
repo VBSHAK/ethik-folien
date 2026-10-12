@@ -200,6 +200,8 @@ em.hl{font-style:normal;background:linear-gradient(transparent 58%, var(--golds)
 .cmp .rl{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:15px;letter-spacing:.12em;text-transform:uppercase;
   color:var(--ink3);display:flex;align-items:center}
 .cmp .c{border-radius:14px;padding:13px 20px;font-size:23px;line-height:1.3;font-weight:600;display:flex;align-items:center}
+.cmp .c{font-size:29px;padding:20px 26px}
+.cmp .rl{font-size:18px}
 .cmp .c.h{background:var(--herzs);color:#6E1D0F} .cmp .c.k{background:var(--kopfs);color:#12296A}
 .cmp .hd{border-radius:16px;padding:16px 20px;color:#fff;display:flex;align-items:center;gap:14px}
 .cmp .hd.h{background:var(--herz)} .cmp .hd.k{background:var(--kopf)}
@@ -307,7 +309,7 @@ em.hl{font-style:normal;background:linear-gradient(transparent 58%, var(--golds)
     <button class="navb" id="pv" aria-label="Zurück">‹</button>
     <span id="num"></span>
     <div id="bar"></div>
-    <span id="who"></span><span id="clock">0:00 / 8:00</span>
+    <span id="who"></span><span id="clock">0:00 / 6:00</span>
     <button class="navb" id="nx" aria-label="Weiter">›</button>
   </div>
 </div></div>
@@ -384,8 +386,26 @@ function tally(id,a,b,ha,hb){
 var SL=[];
 function slide(o){ SL.push(o); }
 
-/* 1 — Kaltstart: Gedankenspiel */
-slide({spk:"Luis", sec:"Gedankenspiel 1", min:"0:40",
+/* 1 — Titel */
+slide({spk:"Luis", sec:"Ethik", min:"0:15",
+  html:
+  '<div class="body" style="align-items:center;gap:60px">'+
+    '<div style="flex:1;display:flex;flex-direction:column;gap:26px">'+
+      '<span class="kick">Gesinnungsethik &amp; Verantwortungsethik</span>'+
+      '<h1 class="display"><span class="herz">Herz</span><br>oder <span class="kopf">Kopf</span>?</h1>'+
+      '<p class="lead" style="max-width:30ch">Zählt, was du <b style="color:var(--herz)">willst</b> — oder was du <b style="color:var(--kopf)">bewirkst</b>?</p>'+
+      '<div style="display:flex;gap:12px"><span class="chip" style="font-size:16px">Luis &amp; Ciepi</span></div>'+
+    '</div>'+
+    '<div style="position:relative;width:520px;height:520px;flex:none">'+
+      '<div class="bob" style="position:absolute;left:0;top:30px">'+heartIco(300)+'</div>'+
+      '<div class="bob" style="position:absolute;right:0;bottom:10px;animation-delay:-1.7s">'+headIco(300)+'</div>'+
+    '</div>'+
+  '</div>',
+  notes:{say:"Unser Thema: Gesinnungs- und Verantwortungsethik. Kurz gesagt: Herz oder Kopf? Zählt, was du willst, oder was du bewirkst? Zuerst ein Gedankenspiel.",
+    act:["C startet die Uhr"]}});
+
+/* 2 — Gedankenspiel */
+slide({spk:"Luis", sec:"Gedankenspiel", min:"0:45",
   html:
   '<div class="body" style="gap:60px;align-items:center">'+
     '<div class="door">'+
@@ -394,355 +414,170 @@ slide({spk:"Luis", sec:"Gedankenspiel 1", min:"0:40",
         '<rect x="40" y="30" width="280" height="500" rx="4" fill="#7A4E32"/>'+
         '<rect x="66" y="60" width="228" height="170" rx="6" fill="none" stroke="#5E3A24" stroke-width="8"/>'+
         '<rect x="66" y="262" width="228" height="230" rx="6" fill="none" stroke="#5E3A24" stroke-width="8"/>'+
-        '<circle cx="280" cy="300" r="15" fill="#D8B25F"/><circle cx="276" cy="296" r="5" fill="#F4DFA6"/>'+
+        '<circle cx="280" cy="300" r="15" fill="#D8B25F"/>'+
         '<rect class="lightsl" x="40" y="528" width="280" height="10" fill="#FFD66B"/>'+
-        '<path class="lightsl" d="M40 538 L0 560 L360 560 L320 538Z" fill="#FFD66B" opacity=".35"/>'+
       '</svg>'+
       '<span class="knock" style="left:-40px;top:120px">Klopf!</span>'+
-      '<span class="knock" style="right:-50px;top:250px;animation-delay:.3s">Klopf!</span>'+
     '</div>'+
-    '<div style="flex:1;display:flex;flex-direction:column;gap:22px">'+
-      '<span class="kick">Stellt euch vor …</span>'+
-      '<h1 class="h1">Deine beste Freundin versteckt sich bei dir.</h1>'+
-      '<p class="lead">Es klopft. Draußen steht jemand, der ihr etwas antun will, und fragt: <b style="color:var(--ink)">„Ist sie bei dir?“</b></p>'+
-      '<div data-step="1">'+tally("door","😶 Ich lüge:<br>„Nein.“","🙋 Ich sage<br>die Wahrheit")+'</div>'+
-      '<div data-step="2" class="card" style="display:flex;gap:20px;align-items:center;padding:18px 24px">'+
-        '<span class="chip g" style="flex:none">Plot-Twist</span>'+
-        '<p class="txt" style="color:var(--ink)">Der Philosoph <b>Immanuel Kant</b> sagt: <b>Du darfst nicht lügen.</b> Nie. Auch hier nicht. Wer hat recht? Genau darum geht es heute.</p>'+
+    '<div style="flex:1;display:flex;flex-direction:column;gap:24px">'+
+      '<h1 class="h1">Deine Freundin versteckt sich bei dir.</h1>'+
+      '<p class="lead">Jemand will ihr schaden und fragt: <b style="color:var(--ink)">„Ist sie bei dir?“</b> Was sagst du?</p>'+
+      '<div data-step="1">'+tally("door","😶 Ich lüge","🙋 Ich sage<br>die Wahrheit")+'</div>'+
+      '<div data-step="2" class="card" style="padding:18px 24px">'+
+        '<p class="txt" style="color:var(--ink)"><b>Kant</b> sagt: Lügen ist <b>immer</b> falsch. Wer recht hat, klären wir jetzt.</p>'+
       '</div>'+
     '</div>'+
   '</div>',
-  notes:{say:"Kurzes Gedankenspiel: Eure beste Freundin versteckt sich bei euch. Es klopft. Draußen steht jemand, der ihr etwas antun will: Ist sie bei dir? Hände hoch: Wer lügt? … Wer sagt die Wahrheit? … Plot-Twist: Kant sagt, man darf nie lügen. Auch hier nicht. Wer hat recht? Das klären wir jetzt.",
-    act:["C drücken → Uhr startet","Leertaste → Abstimmung erscheint, Hände zählen, mit Taste 1 / 2 (oder Klick) eintragen","Leertaste → Kant-Twist","Keine Auflösung verraten, nur neugierig machen"]}});
-
-/* 2 — Titel */
-slide({spk:"Luis", sec:"Ethik · Ethische Fragen des Zusammenlebens", min:"0:15",
-  html:
-  '<div class="body" style="align-items:center;gap:60px">'+
-    '<div style="flex:1;display:flex;flex-direction:column;gap:26px">'+
-      '<span class="kick">Gesinnungsethik &amp; Verantwortungsethik</span>'+
-      '<h1 class="display"><span class="herz">Herz</span><br>oder <span class="kopf">Kopf</span>?</h1>'+
-      '<p class="lead" style="max-width:30ch">Zählt, was du <b style="color:var(--herz)">willst</b> — oder was du <b style="color:var(--kopf)">bewirkst</b>?</p>'+
-      '<div style="display:flex;gap:12px;align-items:center;margin-top:8px">'+
-        
-        '<span class="chip" style="font-size:16px">Luis &amp; Ciepi</span>'+
-        '<span class="chip">3 Gedankenspiele · Live-Quiz</span>'+
-      '</div>'+
-    '</div>'+
-    '<div style="position:relative;width:520px;height:520px;flex:none">'+
-      '<div class="bob" style="position:absolute;left:0;top:30px">'+heartIco(300)+'</div>'+
-      '<div class="bob" style="position:absolute;right:0;bottom:10px;animation-delay:-1.7s">'+headIco(300)+'</div>'+
-    '</div>'+
-  '</div>',
-  notes:{say:"Unser Thema: Gesinnungs- und Verantwortungsethik. Kurz: Herz oder Kopf? Zählt, was du willst, oder was du bewirkst? Ciepi, die Grundidee.",
-    act:["Kurz halten","Übergabe an Ciepi"]}});
+  notes:{say:"Eure Freundin versteckt sich bei euch. Jemand will ihr schaden und fragt: Ist sie bei dir? Hände hoch: Wer lügt? … Wer sagt die Wahrheit? … Der Philosoph Kant sagt: Lügen ist immer falsch, auch hier. Wer hat recht? Ciepi erklärt die Grundidee.",
+    act:["Leertaste → Abstimmung, Hände zählen (Taste 1 / 2)","Leertaste → Kant","Übergabe an Ciepi"]}});
 
 /* 3 — Grundidee */
-slide({spk:"Ciepi", sec:"1 · Die Grundidee", min:"0:35",
+slide({spk:"Ciepi", sec:"Die Grundidee", min:"0:40",
   html:
-  '<div class="body" style="flex-direction:column;gap:26px">'+
-    '<h2 class="h2">Zwei Fragen, bevor du handelst</h2>'+
-    '<div style="display:flex;align-items:center;gap:0">'+
-      '<div class="card h" style="flex:1;display:flex;gap:22px;align-items:center;padding:28px 34px">'+heartIco(120)+
-        '<div><span class="kick herz">Gesinnungsethik</span><p class="h2" style="font-size:40px;margin-top:6px">„Ist meine <u>Absicht</u> moralisch gut?“</p></div></div>'+
-      '<div class="vs" style="margin:0 -30px;z-index:2">vs</div>'+
-      '<div class="card k" style="flex:1;display:flex;gap:22px;align-items:center;padding:28px 34px 28px 50px">'+headIco(120)+
-        '<div><span class="kick kopf">Verantwortungsethik</span><p class="h2" style="font-size:40px;margin-top:6px">„Sind die <u>Folgen</u> vertretbar?“</p></div></div>'+
+  '<div class="body" style="flex-direction:column;gap:30px">'+
+    '<h2 class="h2">Zwei Fragen vor jeder Handlung</h2>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:30px">'+
+      '<div class="card h" style="padding:30px 34px;display:flex;flex-direction:column;gap:16px">'+
+        '<div style="display:flex;gap:20px;align-items:center">'+heartIco(100)+'<span class="h2 herz" style="font-size:44px">Gesinnungsethik</span></div>'+
+        '<p class="h3">„Ist meine Absicht gut?“</p>'+
+        '<p class="lead" data-step="1" style="font-size:27px">Richtig ist, was aus <b>guter Absicht</b> kommt.</p></div>'+
+      '<div class="card k" style="padding:30px 34px;display:flex;flex-direction:column;gap:16px">'+
+        '<div style="display:flex;gap:20px;align-items:center">'+headIco(100)+'<span class="h2 kopf" style="font-size:44px">Verantwortungsethik</span></div>'+
+        '<p class="h3">„Sind die Folgen gut?“</p>'+
+        '<p class="lead" data-step="1" style="font-size:27px">Richtig ist, was <b>gute Folgen</b> hat.</p></div>'+
     '</div>'+
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:26px">'+
-      '<p class="lead" data-step="1" style="font-size:29px">Eine Handlung ist <b>richtig, wenn sie aus guter Gesinnung</b> kommt: nach Werten wie Ehrlichkeit, Gerechtigkeit, Mitgefühl.</p>'+
-      '<p class="lead" data-step="1" style="font-size:29px">Eine Handlung ist <b>richtig, wenn ihre Folgen gut</b> sind. Sie wägt ab, kalkuliert Nebenwirkungen und künftige Entwicklungen.</p>'+
-    '</div>'+
-    '<div data-step="2" class="card" style="display:flex;gap:26px;align-items:center;padding:20px 28px;margin-top:auto">'+
-      '<span style="font-size:60px">💶</span>'+
-      '<div style="flex:1"><span class="kick">Beispiel aus dem Buch · Die Spende</span>'+
-      '<p class="txt" style="color:var(--ink);margin-top:4px">Jemand spendet an eine Hilfsorganisation. <b class="herz">Herz:</b> gut, weil die Absicht aufrichtig ist. <b class="kopf">Kopf:</b> gut erst, wenn das Geld auch wirklich ankommt und hilft.</p></div>'+
+    '<div data-step="2" class="card" style="display:flex;gap:24px;align-items:center;padding:20px 28px">'+
+      '<span style="font-size:56px">💶</span>'+
+      '<p class="lead" style="font-size:26px;color:var(--ink)">Beispiel Spende: <b class="herz">Herz</b> — gut, weil ich helfen will. <b class="kopf">Kopf</b> — gut, wenn das Geld wirklich ankommt.</p>'+
     '</div>'+
   '</div>',
-  notes:{say:"Vor jeder Handlung kann man zwei Fragen stellen. Gesinnungsethik: Ist meine Absicht gut? Verantwortungsethik: Sind die Folgen vertretbar? Beispiel Spende: Fürs Herz zählt die gute Absicht. Für den Kopf erst, ob das Geld wirklich ankommt.",
-    act:["Leertaste → beide Definitionen","Leertaste → Spenden-Beispiel","Auf die zwei Symbole zeigen: Herz = Absicht, Zahnrad mit Wellen = Folgen, die sich ausbreiten"]}});
+  notes:{say:"Vor jeder Handlung kann man zwei Fragen stellen. Die Gesinnungsethik fragt: Ist meine Absicht gut? Die Verantwortungsethik fragt: Sind die Folgen gut? Beispiel Spende: Fürs Herz ist sie gut, weil ich helfen will. Für den Kopf erst, wenn das Geld wirklich ankommt.",
+    act:["Leertaste → Definitionen","Leertaste → Beispiel","Übergabe an Luis"]}});
 
-/* 4 — Gedankenspiel Klimakleber */
-slide({spk:"Ciepi", sec:"Gedankenspiel 2 · aus dem Buch", min:"0:40",
+/* 4 — Unterschiede */
+slide({spk:"Luis", sec:"Die Unterschiede", min:"0:35",
   html:
-  '<div class="body" style="flex-direction:column;gap:24px">'+
-    '<div style="display:flex;align-items:baseline;gap:20px"><h2 class="h2">Nach der dritten Stunde …</h2>'+
-      '<span class="chip g">Im Buch heißt einer der beiden übrigens Luis 👀</span></div>'+
-    '<div class="panel3">'+
-      '<div class="comic"><div class="who"><span class="av" style="background:#8A5CF6">M</span>Marc</div>'+
-        '<div class="bubble">„Wir gehen zur Demo und kleben uns auf die Straße — für unsere Zukunft!“</div></div>'+
-      '<div class="comic"><div class="who"><span class="av" style="background:#F2A33A">L</span>Lea</div>'+
-        '<div class="bubble">„Ich bin für Klimaschutz. Aber was ist, wenn ein <b>Rettungswagen</b> durch muss? Ist es das wert?“</div></div>'+
-      '<div class="comic"><div class="who"><span class="av" style="background:#8A5CF6">M</span>Marc</div>'+
-        '<div class="bubble">„Schon klar. Aber wir handeln nach unserer <b>Überzeugung</b>.“</div></div>'+
-    '</div>'+
-    '<div data-step="1" style="margin-top:8px"><p class="h3" style="margin-bottom:14px">Wem gebt ihr recht? Hände hoch!</p>'+
-      tally("kleber","Marc<br><small style=\'font-weight:600;font-size:17px;color:var(--ink3)\'>„Überzeugung zählt“</small>","Lea<br><small style=\'font-weight:600;font-size:17px;color:var(--ink3)\'>„Folgen bedenken“</small>")+'</div>'+
-    '<div data-step="2" style="display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:auto">'+
-      '<div class="kitem h"><b>❤</b><span>Marc denkt <b>gesinnungsethisch</b>: Die gute Absicht rechtfertigt die Aktion.</span></div>'+
-      '<div class="kitem k"><b>⚙</b><span>Lea denkt <b>verantwortungsethisch</b>: Auch eine gute Aktion hat Folgen für andere.</span></div>'+
-    '</div>'+
-  '</div>',
-  notes:{say:"Eine Szene aus dem Buch, und einer heißt sogar Luis. Marc will sich für das Klima auf die Straße kleben. Lea fragt: Und wenn ein Rettungswagen durch muss? Marc: Wir handeln nach unserer Überzeugung. Wer gibt Marc recht, wer Lea? … Marc denkt gesinnungsethisch, Lea verantwortungsethisch.",
-    act:["Luis kurz anschauen beim Spoiler 😄","Leertaste → Abstimmung, Hände zählen","Leertaste → Auflösung","Übergabe an Luis"]}});
-
-/* 5 — Die Unterschiede */
-slide({spk:"Luis", sec:"2 · Die Unterscheidung", min:"0:35",
-  html:
-  '<div class="body" style="flex-direction:column;gap:18px">'+
-    '<h2 class="h2">Der direkte Vergleich</h2>'+
-    '<div class="cmp">'+
+  '<div class="body" style="flex-direction:column;gap:22px">'+
+    '<h2 class="h2">Der Vergleich</h2>'+
+    '<div class="cmp" style="gap:16px 20px">'+
       '<span></span>'+
       '<div class="hd h">'+heartIco(56,"rgba(255,255,255,.22)")+'<b>Gesinnungsethik</b></div>'+
       '<div class="hd k">'+headIco(56,"rgba(255,255,255,.22)")+'<b>Verantwortungsethik</b></div>'+
-      '<span class="rl" data-step="1">Leitfrage</span><div class="c h" data-step="1">Ist meine Absicht gut?</div><div class="c k" data-step="1">Sind die Folgen vertretbar?</div>'+
-      '<span class="rl" data-step="2">Blick</span><div class="c h" data-step="2">nach innen: Motiv, Gewissen, Werte</div><div class="c k" data-step="2">nach außen: Wirkung, Nebenfolgen, Zukunft</div>'+
-      '<span class="rl" data-step="3">Maßstab</span><div class="c h" data-step="3">feste Prinzipien, gelten immer</div><div class="c k" data-step="3">Abwägung im Einzelfall</div>'+
-      '<span class="rl" data-step="4">Lügen?</span><div class="c h" data-step="4">nein, Lügen ist falsch</div><div class="c k" data-step="4">ja, wenn es ein Leben rettet</div>'+
-      '<span class="rl" data-step="5">Motto</span><div class="c h" data-step="5" style="font-family:Fraunces,serif;font-style:italic;font-size:26px">„Hauptsache, ich meine es gut.“</div><div class="c k" data-step="5" style="font-family:Fraunces,serif;font-style:italic;font-size:26px">„Hauptsache, es geht gut aus.“</div>'+
+      '<span class="rl" data-step="1">Schaut auf</span><div class="c h" data-step="1">die Absicht</div><div class="c k" data-step="1">die Folgen</div>'+
+      '<span class="rl" data-step="2">Regeln</span><div class="c h" data-step="2">gelten immer</div><div class="c k" data-step="2">werden abgewogen</div>'+
+      '<span class="rl" data-step="3">Lügen?</span><div class="c h" data-step="3">nie</div><div class="c k" data-step="3">ja, wenn es Leben rettet</div>'+
+      '<span class="rl" data-step="4">Motto</span><div class="c h" data-step="4" style="font-family:Fraunces,serif;font-style:italic;font-size:27px">„Gut gemeint.“</div><div class="c k" data-step="4" style="font-family:Fraunces,serif;font-style:italic;font-size:27px">„Gut ausgegangen.“</div>'+
     '</div>'+
-    '<p class="txt" data-step="6" style="margin-top:auto"><b style="color:var(--ink)">Wichtig:</b> Verantwortungsethik heißt nicht „egal, was ich will“. Sie nimmt die Folgen nur <em class="hl">noch wichtiger</em> als die Absicht.</p>'+
   '</div>',
-  notes:{say:"Der direkte Vergleich: Absicht gegen Folgen. Blick nach innen gegen Blick nach außen. Feste Prinzipien gegen Abwägung. Lügen ist für die eine Seite immer falsch, für die andere okay, wenn es ein Leben rettet. Motto: Hauptsache gut gemeint gegen Hauptsache gut ausgegangen.",
-    act:["Sechs Mal Leertaste, Zeile für Zeile","Bei „Lügen?“ auf Gedankenspiel 1 zurückverweisen"]}});
+  notes:{say:"Der Vergleich: Die eine schaut auf die Absicht, die andere auf die Folgen. Für die eine gelten Regeln immer, die andere wägt ab. Lügen: Für das Herz nie, für den Kopf ja, wenn es ein Leben rettet. Das Motto: gut gemeint gegen gut ausgegangen.",
+    act:["Vier Mal Leertaste, Zeile für Zeile","Übergabe an Ciepi"]}});
 
-/* 6 — Max Weber */
-slide({spk:"Luis", sec:"3 · Wer hat's erfunden?", min:"0:30",
+/* 5 — Vertreter */
+function person(kind,name,yr,txt,col,tag){
+  return '<div class="card" style="height:100%;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:24px 20px;border-top:6px solid '+col+'">'+
+    '<div class="medal" style="width:120px;height:120px;border-width:5px;border-color:'+col+'">'+bust(kind)+'</div>'+
+    '<b style="font-size:28px;line-height:1.1">'+name+'</b><span class="mono" style="color:var(--ink3);font-size:16px">'+yr+'</span>'+
+    '<span class="chip '+tag+'" style="font-size:16px">'+(tag==="h"?"❤ Herz":tag==="k"?"⚙ Kopf":"★ Namensgeber")+'</span>'+
+    '<p class="txt" style="font-size:22px">'+txt+'</p></div>';
+}
+slide({spk:"Ciepi", sec:"Die Vertreter", min:"0:50",
   html:
-  '<div class="body" style="gap:56px;align-items:center">'+
-    '<div style="display:flex;flex-direction:column;align-items:center;gap:14px;flex:none">'+
-      '<div class="medal">'+bust("weber")+'</div>'+
-      '<b style="font-size:32px">Max Weber</b><span class="mono" style="color:var(--ink3);font-size:18px">1864 – 1920 · Soziologe</span>'+
-      '<span class="chip g">1919 · „Politik als Beruf“</span>'+
+  '<div class="body" style="flex-direction:column;gap:24px">'+
+    '<h2 class="h2">Wer steckt dahinter?</h2>'+
+    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">'+
+      '<div data-step="1">'+person("weber","Max Weber","1919","Erfand beide Begriffe im Vortrag <b>„Politik als Beruf“</b>.","var(--gold)","g")+'</div>'+
+      '<div data-step="2">'+person("kant","Immanuel Kant","1724 – 1804","Pflicht und Regeln zählen, egal was folgt. <b>Nie lügen.</b>","var(--herz)","h")+'</div>'+
+      '<div data-step="3">'+person("mill","Bentham &amp; Mill","Utilitarismus","Richtig ist, was <b>den meisten Menschen nützt</b>.","var(--kopf)","k")+'</div>'+
+      '<div data-step="4">'+person("jonas","Hans Jonas","1979","„Das Prinzip Verantwortung“: an <b>künftige Generationen</b> denken.","var(--kopf)","k")+'</div>'+
     '</div>'+
-    '<div style="flex:1;display:flex;flex-direction:column;gap:24px">'+
-      '<h2 class="h2">Ein Vortrag, zwei Begriffe</h2>'+
-      '<p class="lead" style="font-size:26px">1919, kurz nach dem Ersten Weltkrieg, spricht Weber in München vor Studierenden über „Politik als Beruf“.</p>'+
-      '<div class="card" style="padding:26px 32px"><p class="quote">… alles ethisch orientierte Handeln [kann] unter zwei voneinander grundverschiedenen, unaustragbar gegensätzlichen Maximen stehen: … ‚gesinnungsethisch‘ oder ‚verantwortungsethisch‘.“</p>'+
-        '<p class="src">MAX WEBER, POLITIK ALS BERUF, 1919</p></div>'+
-      '<div data-step="1" style="display:grid;grid-template-columns:1fr 1fr;gap:18px">'+
-        '<div class="kitem h"><b>❤</b><span>Gesinnungsethiker tut das Richtige und <b>überlässt den Erfolg Gott</b>. Für Folgen fühlt er sich nicht zuständig.</span></div>'+
-        '<div class="kitem k"><b>⚙</b><span>Verantwortungsethiker <b>steht für die voraussehbaren Folgen</b> seines Handelns ein.</span></div>'+
-      '</div>'+
-      '<p class="txt" data-step="2"><b style="color:var(--ink)">Webers Urteil:</b> Wer Politik macht, muss <b class="kopf">verantwortungsethisch</b> handeln. Nur mit gutem Gewissen zu regieren, findet er gefährlich.</p>'+
-    '</div>'+
+    '<p class="txt" data-step="5"><b style="color:var(--ink)">Dazu:</b> Platon &amp; Aristoteles (Tugendethik) gehören zur Herz-Seite. Jonas unterscheidet <b>Nahethik</b> (Familie, Freunde) und <b>Fernethik</b> (Welt, Zukunft).</p>'+
   '</div>',
-  notes:{say:"Die Begriffe stammen von Max Weber, 1919, Vortrag „Politik als Beruf“. Der Gesinnungsethiker tut das Richtige und überlässt den Erfolg Gott. Der Verantwortungsethiker steht für die Folgen ein. Weber sagt: Politiker müssen verantwortungsethisch handeln.",
-    act:["Zitat langsam vorlesen","Leertaste → Weber-Gegenüberstellung","Leertaste → Webers Urteil","Übergabe an Ciepi"]}});
+  notes:{say:"Wer steckt dahinter? Max Weber hat 1919 beide Begriffe erfunden, im Vortrag Politik als Beruf. Auf der Herz-Seite steht Kant: Pflicht zählt, egal was passiert, also nie lügen. Auf der Kopf-Seite Bentham und Mill: Richtig ist, was den meisten nützt. Und Hans Jonas sagt 1979: Wir müssen auch an künftige Generationen denken. Er unterscheidet Nahethik, also Familie und Freunde, und Fernethik, also die ganze Welt und die Zukunft.",
+    act:["Fünf Mal Leertaste, Person für Person"]}});
 
-/* 7 — Ahnengalerie */
-slide({spk:"Ciepi", sec:"3 · Philosophen & Vertreter", min:"0:40",
-  html:
-  '<div class="body" style="flex-direction:column">'+
-    '<div style="display:flex;align-items:baseline;gap:20px"><h2 class="h2">Die Ahnengalerie</h2>'+
-      '<span class="chip h">❤ Wurzeln der Gesinnungsethik</span><span class="chip k">⚙ Wurzeln der Verantwortungsethik</span></div>'+
-    '<div class="tline" style="margin-top:20px">'+
-      '<div class="axis"></div><div class="gap">~2000 J.</div>'+
-      '<div class="ph up dot" data-step="1" style="left:0;--pc:var(--herz)"><div class="md">'+bust("plato")+'</div>'+
-        '<span class="nm">Platon &amp; Aristoteles</span><span class="yr">428 – 322 v. Chr.</span></div>'+
-      '<div class="ph dn" data-step="1" style="left:0;--pc:var(--herz)"><span class="chip h tg">Tugendethik</span>'+
-        '<span class="ds">Gut handelt, wer <b>gute Haltungen</b> (Tugenden) hat: ein ausgewogenes, glückliches Leben.</span></div>'+
-      '<div class="ph up dot" data-step="2" style="left:30%;--pc:var(--herz)"><div class="md">'+bust("kant")+'</div>'+
-        '<span class="nm">Immanuel Kant</span><span class="yr">1724 – 1804</span></div>'+
-      '<div class="ph dn" data-step="2" style="left:30%;--pc:var(--herz)"><span class="chip h tg">Deontologie · Pflichtethik</span>'+
-        '<span class="ds">Das <b>innere Gesetz der Vernunft</b> gilt immer, egal was folgt. Darum: nie lügen.</span></div>'+
-      '<div class="ph up dot" data-step="3" style="left:49%;--pc:var(--kopf)"><div class="md">'+bust("mill")+'</div>'+
-        '<span class="nm">Bentham &amp; Mill</span><span class="yr">1748 – 1873</span></div>'+
-      '<div class="ph dn" data-step="3" style="left:49%;--pc:var(--kopf)"><span class="chip k tg">Utilitarismus</span>'+
-        '<span class="ds">Richtig ist, was das <b>größte Glück der größten Zahl</b> bringt. Nur Folgen zählen.</span></div>'+
-      '<div class="ph up dot" data-step="4" style="left:66%;--pc:var(--gold)"><div class="md">'+bust("weber")+'</div>'+
-        '<span class="nm">Max Weber</span><span class="yr">1919</span></div>'+
-      '<div class="ph dn" data-step="4" style="left:66%;--pc:var(--gold)"><span class="chip g tg">gibt beiden den Namen</span>'+
-        '<span class="ds">Prägt das Gegensatzpaar.</span></div>'+
-      '<div class="ph up dot" data-step="5" style="left:83%;--pc:var(--kopf)"><div class="md">'+bust("jonas")+'</div>'+
-        '<span class="nm">Hans Jonas</span><span class="yr">1979</span></div>'+
-      '<div class="ph dn" data-step="5" style="left:83%;--pc:var(--kopf)"><span class="chip k tg">Prinzip Verantwortung</span>'+
-        '<span class="ds">Ethik für das <b>Technik-Zeitalter</b>. Gleich mehr.</span></div>'+
-    '</div>'+
-  '</div>',
-  notes:{say:"Die Wurzeln: Platon und Aristoteles mit der Tugendethik, Kant mit der Pflichtethik, nie lügen. Das ist die Herz-Seite. Auf der Kopf-Seite: Bentham und Mill, größtes Glück für die meisten. 1919 gibt Weber beiden den Namen, 1979 bringt Hans Jonas die Verantwortung ins Technik-Zeitalter.",
-    act:["Fünf Mal Leertaste, Person für Person","Farben erklären: rot = Herz, blau = Kopf"]}});
-
-/* 8 — Hans Jonas + Nah/Fern */
-slide({spk:"Ciepi", sec:"3 · Hans Jonas & die Fernethik", min:"0:35",
-  html:
-  '<div class="body" style="gap:50px;align-items:center">'+
-    '<div style="flex:1;display:flex;flex-direction:column;gap:22px">'+
-      '<div style="display:flex;gap:20px;align-items:center"><div class="medal" style="width:120px;height:120px;border-width:5px">'+bust("jonas")+'</div>'+
-        '<div><b style="font-size:34px">Hans Jonas</b><div class="mono" style="color:var(--ink3);font-size:17px;margin-top:4px">„Das Prinzip Verantwortung“, 1979</div></div></div>'+
-      '<p class="txt">Moderne Technik gibt uns <b>Macht über die Natur und die Zukunft</b>. Deshalb braucht es einen neuen kategorischen Imperativ:</p>'+
-      '<div class="card k" style="padding:22px 28px"><p class="quote" style="font-size:31px">Handle so, dass die Wirkungen deiner Handlung verträglich sind mit der Permanenz echten menschlichen Lebens auf Erden.“</p><p class="src">HANS JONAS, 1979</p></div>'+
-      '<div data-step="5" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">'+
-        '<div class="kitem k" style="background:#EEF2FC"><b>👪</b><span><b>Nahethik:</b> Verantwortung für Menschen um mich herum.</span></div>'+
-        '<div class="kitem k"><b>🌍</b><span><b>Fernethik:</b> für Fremde, die Umwelt und <b>künftige Generationen</b>.</span></div>'+
-      '</div>'+
-    '</div>'+
-    '<div class="rings">'+
-      '<div class="ring on" style="width:140px;height:140px;background:var(--kopf);z-index:5;align-items:center;color:#fff;font-weight:800;font-size:26px">ICH</div>'+
-      '<div class="ring" data-ring="1" style="width:270px;height:270px;background:#C9D6F6;z-index:4"><span>👪 Familie &amp; Freunde</span></div>'+
-      '<div class="ring" data-ring="2" style="width:400px;height:400px;background:#DCE4F9;z-index:3"><span>🏙 Nachbarschaft &amp; Land</span></div>'+
-      '<div class="ring" data-ring="3" style="width:520px;height:520px;background:#E9EEFB;z-index:2"><span>🌍 Menschen weltweit &amp; Natur</span></div>'+
-      '<div class="ring" data-ring="4" style="width:636px;height:636px;background:#F3F6FD;border:3px dashed var(--kopf);z-index:1"><span>👶 Generationen 2100+</span></div>'+
-    '</div>'+
-  '</div>',
-  onStep:function(st,el){ var r=el.querySelectorAll("[data-ring]"); for(var i=0;i<r.length;i++) r[i].classList.toggle("on", +r[i].getAttribute("data-ring")<=st); },
-  steps:5,
-  notes:{say:"Jonas sagt: Technik gibt uns riesige Macht über die Zukunft. Darum: Handle so, dass auch künftig menschliches Leben auf der Erde möglich bleibt. Die Kreise zeigen: Unser Handeln wirkt von Familie bis zu Menschen, die noch nicht geboren sind. Innen Nahethik, außen Fernethik.",
-    act:["Leertaste 4× → Kreise wachsen nach außen","Leertaste → Nah- und Fernethik","Übergabe an Luis"]}});
-
-/* 9 — Schnellrunde */
+/* 6 — Anwendung / Schnellrunde */
 function fcard(n, q, cls, v, why){
-  return '<div class="flip" data-flip="'+n+'" style="height:300px"><div class="in">'+
+  return '<div class="flip" data-flip="'+n+'" style="height:250px"><div class="in">'+
     '<div class="fa"><span class="n">FALL '+n+'</span><p class="q">'+q+'</p>'+
       '<div class="ask"><span class="chip h">❤ Herz?</span><span class="chip k">⚙ Kopf?</span></div></div>'+
-    '<div class="fb '+cls+'"><span class="n" style="color:rgba(255,255,255,.7)">FALL '+n+'</span><span class="v">'+v+'</span><p>'+why+'</p><p style="margin-top:auto;font-size:17px;opacity:.78;font-style:italic">'+q+'</p></div>'+
+    '<div class="fb '+cls+'"><span class="n" style="color:rgba(255,255,255,.7)">FALL '+n+'</span><span class="v">'+v+'</span><p>'+why+'</p></div>'+
   '</div></div>';
 }
-slide({spk:"Luis", sec:"4 · Anwendung · Schnellrunde", min:"0:45",
+slide({spk:"Ciepi", sec:"Beispiele aus dem Alltag", min:"0:50",
   html:
   '<div class="body" style="flex-direction:column;gap:22px">'+
-    '<div style="display:flex;align-items:baseline;gap:22px"><h2 class="h2">Herz oder Kopf? Ruft rein!</h2>'+
-      '<span class="kick">Leertaste dreht die nächste Karte um</span></div>'+
+    '<h2 class="h2">Herz oder Kopf? Ruft rein!</h2>'+
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">'+
-      fcard(1,"Eine Schülerin sagt ihrem Lehrer die Wahrheit über die vergessene Hausaufgabe, obwohl sie dafür eine schlechte Note bekommt.","h","❤ Herz","Ehrlichkeit als Prinzip, die schlechte Folge für sie selbst nimmt sie in Kauf.")+
-      fcard(2,"Bevor du spendest, prüfst du, ob die Organisation das Geld wirklich zu den Bedürftigen bringt.","k","⚙ Kopf","Du achtest auf die Wirkung, nicht nur auf deine gute Absicht.")+
-      fcard(3,"Eine Ärztin gibt aus Mitgefühl ein kaum getestetes Medikament. Es schadet mehr, als es nützt.","h","❤ Herz","Starke Absicht, aber die Folgen wurden nicht bedacht. Beispiel aus dem Buch für die Kritik.")+
-      fcard(4,"Eine Regierung beschließt strenge Klimagesetze, obwohl die Wirtschaft kurzfristig verliert.","k","⚙ Kopf","Abwägung: kurzfristige Kosten gegen langfristigen Schutz künftiger Generationen (Fernethik).")+
+      fcard(1,"Marc klebt sich für das Klima auf die Straße: „Wir handeln nach unserer Überzeugung.“","h","❤ Herz","Seine Absicht zählt. Lea fragt: „Und wenn ein Rettungswagen durch muss?“ Das wäre Kopf.")+
+      fcard(2,"Bevor du spendest, prüfst du, ob das Geld wirklich ankommt.","k","⚙ Kopf","Du achtest auf die Wirkung.")+
+      fcard(3,"Eine Ärztin gibt aus Mitgefühl ein kaum getestetes Medikament. Es schadet.","h","❤ Herz","Gute Absicht, aber die Folgen wurden vergessen.")+
+      fcard(4,"Die Regierung macht strenge Klimagesetze, obwohl die Wirtschaft kurz verliert.","k","⚙ Kopf","Sie denkt an die Zukunft (Fernethik).")+
     '</div>'+
   '</div>',
   steps:4,
   onStep:function(st,el){ var f=el.querySelectorAll("[data-flip]"); for(var i=0;i<f.length;i++) f[i].classList.toggle("open", +f[i].getAttribute("data-flip")<=st); },
-  notes:{say:"Ihr seid dran, ruft rein: Herz oder Kopf? Fall 1, Ehrlichkeit trotz schlechter Note: Herz. Fall 2, prüfen, ob die Spende ankommt: Kopf. Fall 3, Ärztin gibt aus Mitgefühl ein ungetestetes Medikament: Herz. Fall 4, Klimagesetze trotz Kosten: Kopf.",
-    act:["Fall vorlesen → Klasse rufen lassen → Leertaste dreht um","Karten lassen sich auch anklicken","Übergabe an Ciepi"]}});
+  notes:{say:"Jetzt ihr: Ich lese vor, ihr ruft Herz oder Kopf. Fall 1, aus dem Buch: Marc klebt sich für das Klima auf die Straße. … Herz! Fall 2: Du prüfst, ob deine Spende ankommt. … Kopf! Fall 3: Eine Ärztin gibt aus Mitgefühl ein ungetestetes Medikament. … Herz! Fall 4: Strenge Klimagesetze trotz Kosten. … Kopf!",
+    act:["Vorlesen → Klasse rufen lassen → Leertaste dreht um","Übergabe an Luis"]}});
 
-/* 10 — Anwendungsbereiche */
-slide({spk:"Ciepi", sec:"4 · Wo begegnet uns das?", min:"0:25",
+/* 7 — Kritik & Herausforderungen */
+slide({spk:"Luis", sec:"Kritik & Herausforderungen", min:"0:40",
   html:
   '<div class="body" style="flex-direction:column;gap:24px">'+
-    '<h2 class="h2">Vier Bereiche, in denen beide Fragen zählen</h2>'+
-    '<div class="fields">'+
-      '<div class="field" data-step="1"><span class="fi">🏛</span><h3>Politik</h3><p>Gesetze wirken auf Millionen. Weber verlangt: für Folgen geradestehen.</p>'+
-        '<div class="duo"><div class="h">❤ Ist das Gesetz gerecht?</div><div class="k">⚙ Wen trifft es, was kostet es?</div></div></div>'+
-      '<div class="field" data-step="2"><span class="fi">🩺</span><h3>Medizin</h3><p>Mitgefühl allein reicht nicht, Behandlungen müssen sicher sein.</p>'+
-        '<div class="duo"><div class="h">❤ Will ich helfen?</div><div class="k">⚙ Ist es getestet und sicher?</div></div></div>'+
-      '<div class="field" data-step="3"><span class="fi">🤖</span><h3>Technik</h3><p>Künstliche Intelligenz und Gentechnik: Folgen sind groß und oft unbekannt.</p>'+
-        '<div class="duo"><div class="h">❤ Achten wir die Würde?</div><div class="k">⚙ Was passiert in 20 Jahren?</div></div></div>'+
-      '<div class="field" data-step="4"><span class="fi">🌊</span><h3>Umwelt</h3><p>Weniger Plastik: nicht nur Müll hier, sondern Meere und künftige Generationen.</p>'+
-        '<div class="duo"><div class="h">❤ Will ich die Natur schützen?</div><div class="k">⚙ Wirkt mein Handeln wirklich?</div></div></div>'+
+    '<h2 class="h2">Beide haben Schwächen</h2>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:26px">'+
+      '<div class="klist"><span class="kick herz">Kritik an der Gesinnungsethik</span>'+
+        '<div class="kitem h" data-step="1"><b>✖</b><span><b>Gut gemeint ist nicht gut gemacht.</b> Folgen werden übersehen.</span></div>'+
+        '<div class="kitem h" data-step="1"><b>✖</b><span>Kann <b>stur</b> machen. Für Politik laut Weber ungeeignet.</span></div></div>'+
+      '<div class="klist"><span class="kick kopf">Kritik an der Verantwortungsethik</span>'+
+        '<div class="kitem k" data-step="2"><b>✖</b><span><b>Folgen kann man oft nicht vorhersehen.</b></span></div>'+
+        '<div class="kitem k" data-step="2"><b>✖</b><span>Gefahr: <b>Der Zweck heiligt die Mittel.</b></span></div></div>'+
     '</div>'+
-    '<p class="lead" data-step="5" style="margin-top:auto">Im echten Leben stellt man <em class="hl">beide Fragen</em>, nur mit unterschiedlichem Gewicht.</p>'+
-  '</div>',
-  notes:{say:"Wo begegnet uns das? In Politik, Medizin, Technik und Umwelt. Überall stellt man beide Fragen, nur unterschiedlich stark.",
-    act:["Vier Mal Leertaste, ein Bereich pro Klick","Leertaste → Merksatz","Übergabe an Luis"]}});
-
-/* 11 — Kritik (Waage) */
-slide({spk:"Luis", spk2:"Ciepi", sec:"5 · Kritik", min:"0:40",
-  html:
-  '<div class="body" style="gap:34px;align-items:center">'+
-    '<div style="flex:1;display:flex;flex-direction:column;gap:12px">'+
-      '<span class="kick herz">Kritik an der Gesinnungsethik</span>'+
-      '<div class="klist">'+
-        '<div class="kitem h" data-step="1"><b>①</b><span><b>Folgen werden vernachlässigt.</b> Gut gemeint ist nicht gut gemacht (siehe Ärztin).</span></div>'+
-        '<div class="kitem h" data-step="2"><b>②</b><span><b>Kann stur machen:</b> „Ich hab ja recht“, egal wer darunter leidet.</span></div>'+
-        '<div class="kitem h" data-step="3"><b>③</b><span>Laut Weber <b>ungeeignet für die Politik</b>.</span></div>'+
-      '</div>'+
-    '</div>'+
-    '<div class="scale" id="scale">'+
-      '<div class="foot"></div><div class="post"></div><div class="pivot"></div>'+
-      '<div class="beam"><div class="bar"></div>'+
-        '<div class="pan l"><div class="str"></div><div class="dish"></div><div class="w" id="wl"></div></div>'+
-        '<div class="pan r"><div class="str"></div><div class="dish"></div><div class="w" id="wr"></div></div>'+
-      '</div>'+
-      '<div data-step="7" class="pop" style="position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);white-space:nowrap">'+
-        '<span class="chip g" style="font-size:22px;padding:10px 22px">⚖ Beide haben blinde Flecken</span></div>'+
-    '</div>'+
-    '<div style="flex:1;display:flex;flex-direction:column;gap:12px">'+
-      '<span class="kick kopf">Kritik an der Verantwortungsethik</span>'+
-      '<div class="klist">'+
-        '<div class="kitem k" data-step="4"><b>①</b><span><b>Folgen sind oft nicht vorhersehbar.</b> Niemand kennt die Zukunft.</span></div>'+
-        '<div class="kitem k" data-step="5"><b>②</b><span><b>Heiligt der Zweck die Mittel?</b> Werte werden verhandelbar.</span></div>'+
-        '<div class="kitem k" data-step="6"><b>③</b><span><b>Wer entscheidet</b>, welche Folgen zählen und wer draufzahlt?</span></div>'+
-      '</div>'+
+    '<div class="card" data-step="3" style="display:flex;gap:22px;align-items:center;padding:20px 28px">'+
+      '<span style="font-size:52px">🤖</span>'+
+      '<p class="lead" style="font-size:25px;color:var(--ink)"><b>Heute schwierig:</b> Bei KI, Gentechnik oder Klima sind die Folgen riesig, unsicher und betreffen Menschen weit weg oder in der Zukunft.</p>'+
     '</div>'+
   '</div>',
-  steps:7,
-  onStep:function(st,el){
-    var l=Math.min(st,3), r=Math.max(0,Math.min(st-3,3));
-    var wl=el.querySelector("#wl"), wr=el.querySelector("#wr");
-    wl.innerHTML=new Array(l*2+1).join("<i></i>"); wr.innerHTML=new Array(r*2+1).join("<i></i>");
-    el.querySelector(".beam").style.setProperty("--tilt", ((r-l)*5)+"deg");
-  },
-  notes:{say:"LUIS: Kritik an der Gesinnungsethik: Folgen werden vernachlässigt, sie kann stur machen, und für Politik ist sie laut Weber ungeeignet. — CIEPI: Kritik an der Verantwortungsethik: Folgen sind oft nicht vorhersehbar, der Zweck könnte die Mittel heiligen, und wer entscheidet, welche Folgen zählen? Beide haben blinde Flecken.",
-    act:["Luis: 3× Leertaste, Waage kippt nach links","Ciepi übernimmt: 3× Leertaste, Waage gleicht aus","Leertaste → „Beide haben blinde Flecken“"]}});
+  notes:{say:"Beide haben Schwächen. Die Gesinnungsethik übersieht Folgen: gut gemeint ist nicht gut gemacht. Und sie kann stur machen. Bei der Verantwortungsethik kann man Folgen oft nicht vorhersehen, und es droht: Der Zweck heiligt die Mittel. Heute ist das besonders schwierig, etwa bei KI oder beim Klima: Die Folgen sind riesig, unsicher und betreffen Menschen weit weg oder in der Zukunft.",
+    act:["Leertaste → Herz-Kritik","Leertaste → Kopf-Kritik","Leertaste → Herausforderung heute","Übergabe an Ciepi"]}});
 
-/* 12 — Gedankenspiel 3: Ethikkomitee */
-slide({spk:"Ciepi", sec:"Gedankenspiel 3 · Herausforderungen heute", min:"0:40",
+/* 8 — Fazit */
+slide({spk:"Ciepi", spk2:"Luis", sec:"Fazit", min:"0:35",
   html:
-  '<div class="body" style="flex-direction:column;gap:20px">'+
-    '<div style="display:flex;gap:26px;align-items:center">'+
-      '<span style="font-size:84px">🏥</span>'+
-      '<div><span class="kick">Ihr seid jetzt das Ethikkomitee eines Krankenhauses</span>'+
-      '<h2 class="h2" style="margin-top:6px">Soll eine KI bei Diagnosen helfen?</h2></div>'+
-    '</div>'+
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">'+
-      '<div class="card" style="padding:18px 24px"><span class="kick" style="color:#2E7D4F">Dafür</span>'+
-        '<p class="txt" style="margin-top:6px">✔ schneller und oft genauer als Ärztinnen und Ärzte<br>✔ kann Leben retten</p></div>'+
-      '<div class="card" style="padding:18px 24px"><span class="kick" style="color:var(--herz2)">Bedenken</span>'+
-        '<p class="txt" style="margin-top:6px">✖ Datenschutz der Patient:innen<br>✖ weniger Menschlichkeit · Jobs fallen weg</p></div>'+
-    '</div>'+
-    '<div data-step="1">'+tally("ki","✅ Einführen","⛔ Nicht einführen")+'</div>'+
-    '<div data-step="2" class="card" style="display:flex;gap:22px;align-items:center;padding:18px 26px;margin-top:auto">'+
-      '<span class="chip g" style="flex:none">Die Herausforderung</span>'+
-      '<p class="txt" style="color:var(--ink)">Die Folgen sind <b>unsicher</b>, die Verantwortung ist <b>verteilt</b> (wer haftet, wenn die KI irrt?) und viele Betroffene sind <b>weit weg oder noch nicht geboren</b>. Darum braucht es <b class="herz">Herz</b> <i>und</i> <b class="kopf">Kopf</b>.</p>'+
-    '</div>'+
-  '</div>',
-  notes:{say:"Ihr seid das Ethikkomitee eines Spitals: Soll eine KI bei Diagnosen helfen? Sie ist schneller und genauer, aber es gibt Datenschutz- und Job-Sorgen. Hände hoch: einführen oder nicht? … Genau das ist die Herausforderung: unsichere Folgen, verteilte Verantwortung, Betroffene weit weg.",
-    act:["Leertaste → Abstimmung, zählen, eintragen","Leertaste → Herausforderung","Übergabe an Luis"]}});
-
-/* 13 — Schluss */
-slide({spk:"Luis", spk2:"Ciepi", sec:"Fazit", min:"0:30",
-  html:
-  '<div class="body" style="flex-direction:column;gap:26px">'+
+  '<div class="body" style="flex-direction:column;gap:30px;justify-content:center">'+
     '<div class="eq">'+
       '<div class="t">'+heartIco(150)+'<span class="herz">gute Absicht</span></div><span class="op">+</span>'+
       '<div class="t">'+headIco(150)+'<span class="kopf">gute Folgen</span></div><span class="op">=</span>'+
-      '<div class="t"><div style="width:150px;height:150px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:80px;box-shadow:0 0 0 10px var(--golds)">⚖</div><span style="color:#8B6914">verantwortungsvoll handeln</span></div>'+
+      '<div class="t"><div style="width:150px;height:150px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:80px;box-shadow:0 0 0 10px var(--golds)">⚖</div><span style="color:#8B6914">richtig handeln</span></div>'+
     '</div>'+
-    '<div class="card" style="padding:22px 32px;text-align:center"><p class="quote" style="font-size:31px">Gesinnungsethik und Verantwortungsethik [sind] nicht absolute Gegensätze, sondern Ergänzungen, die zusammen erst den echten Menschen ausmachen …“</p><p class="src">MAX WEBER, POLITIK ALS BERUF, 1919</p></div>'+
-    '<div class="take" data-step="1">'+
-      '<div class="card"><b>1</b><p><b style="color:var(--ink)">Absicht allein</b> reicht nicht. Denk an die Folgen.</p></div>'+
-      '<div class="card"><b>2</b><p><b style="color:var(--ink)">Folgen allein</b> reichen nicht. Manche Werte sind nicht verhandelbar.</p></div>'+
-      '<div class="card"><b>3</b><p>Heute zählt die <b style="color:var(--ink)">Fernethik</b>: Welt und Zukunft mitdenken.</p></div>'+
-    '</div>'+
-    '<p class="lead" data-step="2" style="text-align:center">Und Luis aus dem Buch? Er geht mit zur Demo, aber <em class="hl">Leas Worte bleiben ihm im Kopf.</em></p>'+
+    '<div class="card" data-step="1" style="padding:24px 32px;text-align:center"><p class="quote" style="font-size:32px">Gesinnungsethik und Verantwortungsethik [sind] nicht absolute Gegensätze, sondern Ergänzungen …“</p><p class="src">MAX WEBER, 1919</p></div>'+
+    '<p class="lead" data-step="2" style="text-align:center">Man braucht <em class="hl">beides: Herz und Kopf.</em></p>'+
   '</div>',
-  notes:{say:"LUIS: Gute Absicht plus gute Folgen ergibt verantwortungsvolles Handeln. Sogar Weber sagt: Die beiden sind Ergänzungen. — CIEPI: Absicht allein reicht nicht, Folgen allein auch nicht, und heute müssen wir Welt und Zukunft mitdenken. Und jetzt: Handys raus!",
-    act:["Luis: Gleichung + Weber-Zitat","Leertaste → Ciepi: drei Merksätze","Leertaste → Schlusssatz","Quiz-Leitung im zweiten Tab schon offen haben!"]}});
+  notes:{say:"CIEPI: Unser Fazit: Gute Absicht plus gute Folgen ergibt richtiges Handeln. Sogar Weber sagt: Die beiden sind keine Gegensätze, sondern Ergänzungen. — LUIS: Man braucht also beides, Herz und Kopf. Und jetzt: Handys raus!",
+    act:["Leertaste → Weber-Zitat","Leertaste → Schlusssatz (Luis)","Quiz-Leitung im zweiten Tab offen haben!"]}});
 
-/* 14 — Quiz */
-slide({spk:"Luis", spk2:"Ciepi", sec:"Live-Quiz", min:"0:20", quiz:true,
+/* 9 — Quiz */
+slide({spk:"Luis", sec:"Live-Quiz", min:"0:20", quiz:true,
   html:
   '<div class="confetti" id="conf"></div>'+
   '<div class="body" style="gap:60px;align-items:center">'+
     '<div class="qrwrap" id="qrbox"><canvas id="qrcv" width="380" height="380"></canvas></div>'+
     '<div style="flex:1;display:flex;flex-direction:column;gap:24px">'+
-      '<span class="kick">Handys raus · Live-Quiz</span>'+
+      '<span class="kick">Handys raus</span>'+
       '<h1 class="h1">Das Gewissens-Duell</h1>'+
       '<div class="url" id="qurl"></div>'+
       '<div class="steps3">'+
-        '<div><b>1</b>QR-Code scannen oder Adresse eintippen</div>'+
-        '<div><b>2</b>Raumcode vom Quiz-Bildschirm eingeben</div>'+
-        '<div><b>3</b>Figur bauen und euer Team wählen:</div>'+
+        '<div><b>1</b>QR-Code scannen</div>'+
+        '<div><b>2</b>Raumcode eingeben</div>'+
+        '<div><b>3</b>Figur bauen &amp; Team wählen</div>'+
       '</div>'+
       '<div class="teams">'+
         '<div class="team h"><span style="font-size:44px">❤</span><div>Team Herz<small>Gesinnungsethik</small></div></div>'+
         '<div class="team k"><span style="font-size:44px">⚙</span><div>Team Kopf<small>Verantwortungsethik</small></div></div>'+
       '</div>'+
-      '<div class="dancers"><span>🕺</span><span>💃</span><span>🧑‍🎓</span><span>🎉</span></div>'+
     '</div>'+
   '</div>',
-  notes:{say:"QR-Code scannen, Raumcode eingeben, Figur bauen, Team wählen: Herz oder Kopf. Los geht's!",
-    act:["Zum Quiz-Tab wechseln (Leitung läuft schon), dort steht der Raumcode","Warten, bis die meisten drin sind, dann „Quiz starten“"]}});
+  notes:{say:"QR-Code scannen, Raumcode eingeben, Figur bauen und Team wählen: Herz oder Kopf. Los geht's!",
+    act:["Zum Quiz-Tab wechseln, dort steht der Raumcode"]}});
 
 /* ============================================================ MOTOR */
 var cur=0, step=0, maxStep=0, T={};
@@ -800,7 +635,7 @@ function notes(){
 }
 function buildScript(){
   var h='<button class="x" id="sx">Schließen (S)</button><div class="sw"><span class="kick">Sprechtext · Luis &amp; Ciepi</span>'+
-    '<h1>Herz oder Kopf?</h1><p class="txt" style="margin-bottom:20px">Mit Strg+P ausdrucken. Gesamtzeit ca. 8 Minuten.</p>';
+    '<h1>Herz oder Kopf?</h1><p class="txt" style="margin-bottom:20px">Mit Strg+P ausdrucken. Gesamtzeit ca. 5–6 Minuten.</p>';
   SL.forEach(function(o,i){
     h+='<div class="row"><div class="who" style="color:var(--'+SPK[o.spk].c+')">'+(i+1)+'. '+o.spk+(o.spk2?" + "+o.spk2:"")+
       '<small>'+o.min+' min</small></div><div><div class="kick" style="margin-bottom:6px">'+o.sec+'</div>'+
@@ -858,8 +693,8 @@ function startClock(){ if(!run && !acc){ t0=Date.now(); run=true; } }
 function toggleClock(){ if(run){ acc+=Date.now()-t0; run=false; } else { t0=Date.now(); run=true; } }
 setInterval(function(){
   var ms=acc+(run?Date.now()-t0:0), s=Math.floor(ms/1000), c=document.getElementById("clock");
-  c.textContent=Math.floor(s/60)+":"+("0"+s%60).slice(-2)+" / 8:00";
-  c.className=(run?"run":"")+(s>480?" over":"");
+  c.textContent=Math.floor(s/60)+":"+("0"+s%60).slice(-2)+" / 6:00";
+  c.className=(run?"run":"")+(s>360?" over":"");
 },500);
 
 /* ---------------------------------------------------------- Tasten */
